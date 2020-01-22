@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "start:frontend": "cd packages/frontend && npm run start",
-    "start:frontend-host": "cd packages/frontend && npm run start-host"
+    "start:frontend-host": "cd packages/frontend && npm run start-host",
+    "start:backend": "cd packages/backend && npm run start"
   },
   "author": "Peter Skriba",
   "license": "ISC"
