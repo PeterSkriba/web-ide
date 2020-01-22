@@ -6,6 +6,9 @@ import Looks3RoundedIcon from '@material-ui/icons/Looks3Rounded';
 
 import { Monaco, SnackBar } from 'components';
 
+import { useQuery } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
+
 import * as S from './styled'
 
 type MousePos = {
@@ -65,6 +68,12 @@ const Editor = () => {
     }
   }
 
+  const { data } = useQuery(
+    gql`{
+      codes
+    }`
+  )
+
   return (
     <S.Main
       onMouseUp={handleStopDragging}
@@ -88,7 +97,7 @@ const Editor = () => {
                 </S.CircleButton>
               </div>
             </S.BoxHeader>
-            <Monaco code="#include <stdio.h>" focus />
+            <Monaco code={data?.codes} focus />
           </S.Box>
 
           <S.Box type="log" isOpen={logIsOpen}>
