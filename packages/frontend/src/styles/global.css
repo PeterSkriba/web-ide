@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+* {
+  outline: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*::selection {
+  background: #f4413a;
+  color: #ffffff;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  position: relative;
+  font-size: 14px;
+  background: #151935;
+  color: #6a7086;
+  tab-size: 2;
+}
+
+button {
+  padding: 0;
+  border: 0;
+  outline: 0 !important;
+  cursor: pointer;
+}
+
+/* editor */
+
+.monaco-editor, .margin, .monaco-editor-background {
+  background-color: transparent !important;
+}
+
+.decorationsOverviewRuler {
+  display: none;
+}
+
+.minimap canvas {
+  display: none;
+}
+
+.current-line {
+  background: #0d1024;
+  border: 0 !important;
+}
+
+.line-numbers {
+  color: #6a7086 !important;
+}
+
+.slider {
+  width: 8px !important;
+}
+
+.slider {
+  background: #6a7086;
+  opacity: .3;
+}
+
+.overflow-guard, .monaco-editor {
+  height: 100% !important;
+}
+
+.react-monaco-editor-container {
+  overflow: hidden;
+}
