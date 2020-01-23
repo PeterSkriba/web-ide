@@ -1,8 +1,8 @@
-import { GraphQLServer, PubSub } from 'graphql-yoga'
+import { GraphQLServer } from 'graphql-yoga'
 
 import { Query, Mutation, Subscription } from '@/resolvers'
 
-const pubsub = new PubSub()
+const { Prisma } = require('prisma-binding')
 
 const resolvers = {
   Query,
@@ -10,12 +10,15 @@ const resolvers = {
 }
 
 const server = new GraphQLServer({
-  typeDefs: [
-    'src/schema/schema.graphql'
-  ],
+  typeDefs: 'src/schema/schema.graphql',
   resolvers,
   context: {
-    pubsub
+    db: new Prisma({
+      typeDefs: 'src/schema/schema.graphql',
+      endpoint: 'http://localhost:4455',
+      secret: 'secret',
+      debug: true
+    })
   }
 })
 
