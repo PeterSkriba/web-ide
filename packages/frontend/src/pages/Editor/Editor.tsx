@@ -7,7 +7,7 @@ import Looks3RoundedIcon from '@material-ui/icons/Looks3Rounded';
 import { Monaco, SnackBar } from 'components';
 
 import { useQuery } from '@apollo/react-hooks'
-import { CODE } from 'apollo/queries'
+import { CODE, EXERCISE } from 'apollo/queries'
 
 import * as S from './styled'
 
@@ -68,7 +68,20 @@ const Editor = () => {
     }
   }
 
-  const { data } = useQuery(CODE) /* enum */
+  const { loading: exercise_loading, data: exercise_data } = useQuery(EXERCISE, {
+    variables: { id: 0 }
+  })
+
+  const { loading: code_loading, data: code_data } = useQuery(CODE, {
+    variables: {
+      user_id: 0,
+      exercise_id: exercise_data?.exercise?.exercise_id | -1
+    }
+  })
+
+  const getClangTitle = (str: String) => (
+    str.replace(/ /g, '-').toLowerCase().replace(/[^a-z0-9]/gi, '').concat('.c')
+  )
 
   return (
     <S.Main
@@ -83,7 +96,7 @@ const Editor = () => {
           <S.Box type="editor">
             <S.BoxHeader>
               <CodeRounded fontSize="small" />
-              main.c
+              { (!exercise_loading) ? getClangTitle(exercise_data?.exercise?.title) : "" }
               <div>
                 <S.CircleButton onClick={save} color="orange">
                   <S.Tooltip left="-35px">Click to save</S.Tooltip>
@@ -93,7 +106,7 @@ const Editor = () => {
                 </S.CircleButton>
               </div>
             </S.BoxHeader>
-            <Monaco code={data?.code?.body} focus />
+            <Monaco code={code_data?.code?.body} focus />
           </S.Box>
 
           <S.Box type="log" isOpen={logIsOpen}>
@@ -121,37 +134,37 @@ const Editor = () => {
                 <S.TestButton
                   onClick={() => setTestActive(0)}
                   isActive={testActive === 0}
-                  isOk={data?.code?.tests[0] == true}
-                  isFail={data?.code?.tests[0] == false}
+                  isOk={code_data?.code?.tests[0] == true}
+                  isFail={code_data?.code?.tests[0] == false}
                 >
                   <LooksOneRoundedIcon fontSize="small" />
                 </S.TestButton>
                 <S.TestButton
                   onClick={() => setTestActive(1)}
                   isActive={testActive === 1}
-                  isOk={data?.code?.tests[1] == true}
-                  isFail={data?.code?.tests[1] == false}
+                  isOk={code_data?.code?.tests[1] == true}
+                  isFail={code_data?.code?.tests[1] == false}
                 >
                   <LooksTwoRoundedIcon fontSize="small" />
                 </S.TestButton>
                 <S.TestButton
                   onClick={() => setTestActive(2)}
                   isActive={testActive === 2}
-                  isOk={data?.code?.tests[2] == true}
-                  isFail={data?.code?.tests[2] == false}
+                  isOk={code_data?.code?.tests[2] == true}
+                  isFail={code_data?.code?.tests[2] == false}
                 >
                   <Looks3RoundedIcon fontSize="small" />
                 </S.TestButton>
               </div>
             </S.BoxHeader>
-            <Monaco code="" />
+            <Monaco code={exercise_data?.exercise?.stdin[testActive]} />
           </S.Box>
 
           <S.Divider isHorizontal onMouseDown={() => setVerDragging(true)} />
 
           <S.Box type="inout" style={{ height: `calc(${100 - mousePos.y}% - 10px)` }} >
             <S.BoxHeader>Stdout</S.BoxHeader>
-            <Monaco code="" />
+            <Monaco code="" readOnly />
           </S.Box>
         </S.Wrapper>
 

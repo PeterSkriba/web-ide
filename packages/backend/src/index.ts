@@ -5,11 +5,14 @@ import { Query, Mutation, Subscription } from '@/resolvers'
 const pubsub = new PubSub()
 
 const resolvers = {
-  Query
+  Query,
+  Mutation
 }
 
 const server = new GraphQLServer({
-  typeDefs: 'src/schema/schema.graphql',
+  typeDefs: [
+    'src/schema/schema.graphql'
+  ],
   resolvers,
   context: {
     pubsub
