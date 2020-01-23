@@ -1,5 +1,5 @@
-import codes from './codes'
+import code from './code'
 
 export default {
-  codes
+  code
 }

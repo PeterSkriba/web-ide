@@ -7,7 +7,7 @@ import Looks3RoundedIcon from '@material-ui/icons/Looks3Rounded';
 import { Monaco, SnackBar } from 'components';
 
 import { useQuery } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
+import { CODE } from 'apollo/queries'
 
 import * as S from './styled'
 
@@ -68,11 +68,7 @@ const Editor = () => {
     }
   }
 
-  const { data } = useQuery(
-    gql`{
-      codes
-    }`
-  )
+  const { data } = useQuery(CODE) /* enum */
 
   return (
     <S.Main
@@ -97,7 +93,7 @@ const Editor = () => {
                 </S.CircleButton>
               </div>
             </S.BoxHeader>
-            <Monaco code={data?.codes} focus />
+            <Monaco code={data?.code?.body} focus />
           </S.Box>
 
           <S.Box type="log" isOpen={logIsOpen}>
@@ -125,20 +121,24 @@ const Editor = () => {
                 <S.TestButton
                   onClick={() => setTestActive(0)}
                   isActive={testActive === 0}
+                  isOk={data?.code?.tests[0] == true}
+                  isFail={data?.code?.tests[0] == false}
                 >
                   <LooksOneRoundedIcon fontSize="small" />
                 </S.TestButton>
                 <S.TestButton
                   onClick={() => setTestActive(1)}
                   isActive={testActive === 1}
-                  isOk
+                  isOk={data?.code?.tests[1] == true}
+                  isFail={data?.code?.tests[1] == false}
                 >
                   <LooksTwoRoundedIcon fontSize="small" />
                 </S.TestButton>
                 <S.TestButton
                   onClick={() => setTestActive(2)}
                   isActive={testActive === 2}
-                  isFail
+                  isOk={data?.code?.tests[2] == true}
+                  isFail={data?.code?.tests[2] == false}
                 >
                   <Looks3RoundedIcon fontSize="small" />
                 </S.TestButton>
