@@ -1,1 +1,5 @@
-export default {}
+import createUser from './user'
+
+export default {
+  createUser
+}

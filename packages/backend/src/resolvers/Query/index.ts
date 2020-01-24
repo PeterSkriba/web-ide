@@ -1,7 +1,5 @@
-import code from './code'
-import exercise from './exercise'
+import user from './user'
 
 export default {
-  code,
-  exercise
+  user
 }

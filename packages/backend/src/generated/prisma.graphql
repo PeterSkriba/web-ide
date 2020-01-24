@@ -1,0 +1,709 @@
+# source: http://localhost:4466
+# timestamp: Fri Jan 24 2020 11:28:35 GMT+0100 (Central European Standard Time)
+
+type AggregateCode {
+  count: Int!
+}
+
+type AggregateUser {
+  count: Int!
+}
+
+type BatchPayload {
+  """The number of nodes that have been affected by the Batch operation."""
+  count: Long!
+}
+
+type Code implements Node {
+  id: ID!
+  author_id: ID!
+  body: String!
+  tests: [Boolean!]!
+}
+
+"""A connection to a list of items."""
+type CodeConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [CodeEdge]!
+  aggregate: AggregateCode!
+}
+
+input CodeCreateInput {
+  id: ID
+  author_id: ID!
+  body: String!
+  tests: CodeCreatetestsInput
+}
+
+input CodeCreateManyInput {
+  create: [CodeCreateInput!]
+  connect: [CodeWhereUniqueInput!]
+}
+
+input CodeCreatetestsInput {
+  set: [Boolean!]
+}
+
+"""An edge in a connection."""
+type CodeEdge {
+  """The item at the end of the edge."""
+  node: Code!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum CodeOrderByInput {
+  id_ASC
+  id_DESC
+  author_id_ASC
+  author_id_DESC
+  body_ASC
+  body_DESC
+}
+
+type CodePreviousValues {
+  id: ID!
+  author_id: ID!
+  body: String!
+  tests: [Boolean!]!
+}
+
+input CodeScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CodeScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CodeScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CodeScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  author_id: ID
+
+  """All values that are not equal to given value."""
+  author_id_not: ID
+
+  """All values that are contained in given list."""
+  author_id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  author_id_not_in: [ID!]
+
+  """All values less than the given value."""
+  author_id_lt: ID
+
+  """All values less than or equal the given value."""
+  author_id_lte: ID
+
+  """All values greater than the given value."""
+  author_id_gt: ID
+
+  """All values greater than or equal the given value."""
+  author_id_gte: ID
+
+  """All values containing the given string."""
+  author_id_contains: ID
+
+  """All values not containing the given string."""
+  author_id_not_contains: ID
+
+  """All values starting with the given string."""
+  author_id_starts_with: ID
+
+  """All values not starting with the given string."""
+  author_id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  author_id_ends_with: ID
+
+  """All values not ending with the given string."""
+  author_id_not_ends_with: ID
+  body: String
+
+  """All values that are not equal to given value."""
+  body_not: String
+
+  """All values that are contained in given list."""
+  body_in: [String!]
+
+  """All values that are not contained in given list."""
+  body_not_in: [String!]
+
+  """All values less than the given value."""
+  body_lt: String
+
+  """All values less than or equal the given value."""
+  body_lte: String
+
+  """All values greater than the given value."""
+  body_gt: String
+
+  """All values greater than or equal the given value."""
+  body_gte: String
+
+  """All values containing the given string."""
+  body_contains: String
+
+  """All values not containing the given string."""
+  body_not_contains: String
+
+  """All values starting with the given string."""
+  body_starts_with: String
+
+  """All values not starting with the given string."""
+  body_not_starts_with: String
+
+  """All values ending with the given string."""
+  body_ends_with: String
+
+  """All values not ending with the given string."""
+  body_not_ends_with: String
+}
+
+type CodeSubscriptionPayload {
+  mutation: MutationType!
+  node: Code
+  updatedFields: [String!]
+  previousValues: CodePreviousValues
+}
+
+input CodeSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CodeSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: CodeWhereInput
+}
+
+input CodeUpdateDataInput {
+  author_id: ID
+  body: String
+  tests: CodeUpdatetestsInput
+}
+
+input CodeUpdateInput {
+  author_id: ID
+  body: String
+  tests: CodeUpdatetestsInput
+}
+
+input CodeUpdateManyDataInput {
+  author_id: ID
+  body: String
+  tests: CodeUpdatetestsInput
+}
+
+input CodeUpdateManyInput {
+  create: [CodeCreateInput!]
+  connect: [CodeWhereUniqueInput!]
+  set: [CodeWhereUniqueInput!]
+  disconnect: [CodeWhereUniqueInput!]
+  delete: [CodeWhereUniqueInput!]
+  update: [CodeUpdateWithWhereUniqueNestedInput!]
+  updateMany: [CodeUpdateManyWithWhereNestedInput!]
+  deleteMany: [CodeScalarWhereInput!]
+  upsert: [CodeUpsertWithWhereUniqueNestedInput!]
+}
+
+input CodeUpdateManyMutationInput {
+  author_id: ID
+  body: String
+  tests: CodeUpdatetestsInput
+}
+
+input CodeUpdateManyWithWhereNestedInput {
+  where: CodeScalarWhereInput!
+  data: CodeUpdateManyDataInput!
+}
+
+input CodeUpdatetestsInput {
+  set: [Boolean!]
+}
+
+input CodeUpdateWithWhereUniqueNestedInput {
+  where: CodeWhereUniqueInput!
+  data: CodeUpdateDataInput!
+}
+
+input CodeUpsertWithWhereUniqueNestedInput {
+  where: CodeWhereUniqueInput!
+  update: CodeUpdateDataInput!
+  create: CodeCreateInput!
+}
+
+input CodeWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CodeWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  author_id: ID
+
+  """All values that are not equal to given value."""
+  author_id_not: ID
+
+  """All values that are contained in given list."""
+  author_id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  author_id_not_in: [ID!]
+
+  """All values less than the given value."""
+  author_id_lt: ID
+
+  """All values less than or equal the given value."""
+  author_id_lte: ID
+
+  """All values greater than the given value."""
+  author_id_gt: ID
+
+  """All values greater than or equal the given value."""
+  author_id_gte: ID
+
+  """All values containing the given string."""
+  author_id_contains: ID
+
+  """All values not containing the given string."""
+  author_id_not_contains: ID
+
+  """All values starting with the given string."""
+  author_id_starts_with: ID
+
+  """All values not starting with the given string."""
+  author_id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  author_id_ends_with: ID
+
+  """All values not ending with the given string."""
+  author_id_not_ends_with: ID
+  body: String
+
+  """All values that are not equal to given value."""
+  body_not: String
+
+  """All values that are contained in given list."""
+  body_in: [String!]
+
+  """All values that are not contained in given list."""
+  body_not_in: [String!]
+
+  """All values less than the given value."""
+  body_lt: String
+
+  """All values less than or equal the given value."""
+  body_lte: String
+
+  """All values greater than the given value."""
+  body_gt: String
+
+  """All values greater than or equal the given value."""
+  body_gte: String
+
+  """All values containing the given string."""
+  body_contains: String
+
+  """All values not containing the given string."""
+  body_not_contains: String
+
+  """All values starting with the given string."""
+  body_starts_with: String
+
+  """All values not starting with the given string."""
+  body_not_starts_with: String
+
+  """All values ending with the given string."""
+  body_ends_with: String
+
+  """All values not ending with the given string."""
+  body_not_ends_with: String
+}
+
+input CodeWhereUniqueInput {
+  id: ID
+}
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Mutation {
+  createUser(data: UserCreateInput!): User!
+  createCode(data: CodeCreateInput!): Code!
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateCode(data: CodeUpdateInput!, where: CodeWhereUniqueInput!): Code
+  deleteUser(where: UserWhereUniqueInput!): User
+  deleteCode(where: CodeWhereUniqueInput!): Code
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertCode(where: CodeWhereUniqueInput!, create: CodeCreateInput!, update: CodeUpdateInput!): Code!
+  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  updateManyCodes(data: CodeUpdateManyMutationInput!, where: CodeWhereInput): BatchPayload!
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyCodes(where: CodeWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Query {
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  codes(where: CodeWhereInput, orderBy: CodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Code]!
+  user(where: UserWhereUniqueInput!): User
+  code(where: CodeWhereUniqueInput!): Code
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  codesConnection(where: CodeWhereInput, orderBy: CodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CodeConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type Subscription {
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  code(where: CodeSubscriptionWhereInput): CodeSubscriptionPayload
+}
+
+type User implements Node {
+  id: ID!
+  username: String!
+  email: String!
+  codes(where: CodeWhereInput, orderBy: CodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Code!]
+}
+
+"""A connection to a list of items."""
+type UserConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+input UserCreateInput {
+  id: ID
+  username: String!
+  email: String!
+  codes: CodeCreateManyInput
+}
+
+"""An edge in a connection."""
+type UserEdge {
+  """The item at the end of the edge."""
+  node: User!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  username_ASC
+  username_DESC
+  email_ASC
+  email_DESC
+}
+
+type UserPreviousValues {
+  id: ID!
+  username: String!
+  email: String!
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+}
+
+input UserUpdateInput {
+  username: String
+  email: String
+  codes: CodeUpdateManyInput
+}
+
+input UserUpdateManyMutationInput {
+  username: String
+  email: String
+}
+
+input UserWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  username: String
+
+  """All values that are not equal to given value."""
+  username_not: String
+
+  """All values that are contained in given list."""
+  username_in: [String!]
+
+  """All values that are not contained in given list."""
+  username_not_in: [String!]
+
+  """All values less than the given value."""
+  username_lt: String
+
+  """All values less than or equal the given value."""
+  username_lte: String
+
+  """All values greater than the given value."""
+  username_gt: String
+
+  """All values greater than or equal the given value."""
+  username_gte: String
+
+  """All values containing the given string."""
+  username_contains: String
+
+  """All values not containing the given string."""
+  username_not_contains: String
+
+  """All values starting with the given string."""
+  username_starts_with: String
+
+  """All values not starting with the given string."""
+  username_not_starts_with: String
+
+  """All values ending with the given string."""
+  username_ends_with: String
+
+  """All values not ending with the given string."""
+  username_not_ends_with: String
+  email: String
+
+  """All values that are not equal to given value."""
+  email_not: String
+
+  """All values that are contained in given list."""
+  email_in: [String!]
+
+  """All values that are not contained in given list."""
+  email_not_in: [String!]
+
+  """All values less than the given value."""
+  email_lt: String
+
+  """All values less than or equal the given value."""
+  email_lte: String
+
+  """All values greater than the given value."""
+  email_gt: String
+
+  """All values greater than or equal the given value."""
+  email_gte: String
+
+  """All values containing the given string."""
+  email_contains: String
+
+  """All values not containing the given string."""
+  email_not_contains: String
+
+  """All values starting with the given string."""
+  email_starts_with: String
+
+  """All values not starting with the given string."""
+  email_not_starts_with: String
+
+  """All values ending with the given string."""
+  email_ends_with: String
+
+  """All values not ending with the given string."""
+  email_not_ends_with: String
+  codes_some: CodeWhereInput
+}
+
+input UserWhereUniqueInput {
+  id: ID
+  email: String
+}
