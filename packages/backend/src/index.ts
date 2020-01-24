@@ -1,32 +1,28 @@
-import { GraphQLServer } from 'graphql-yoga'
-
-import { Query, Mutation, Subscription } from '@/resolvers'
-
+const { GraphQLServer } = require('graphql-yoga')
 const { Prisma } = require('prisma-binding')
+
+import { Query, Mutation, Subscription } from '@/resolvers'
 
 const resolvers = {
   Query,
-  Mutation
+  Mutation,
+  Node: {
+    __resolveType() {
+      return null;
+    }
+  }
 }
 
 const server = new GraphQLServer({
-  typeDefs: 'src/schema/schema.graphql',
+  typeDefs: 'src/schema.graphql',
   resolvers,
-  context: {
-    db: new Prisma({
-      typeDefs: 'src/schema/schema.graphql',
-      endpoint: 'http://localhost:4455',
-      secret: 'secret',
-      debug: true
+  context: req => ({
+    ...req,
+    prisma: new Prisma({
+      typeDefs: 'src/generated/prisma.graphql',
+      endpoint: 'http://localhost:4466'
     })
-  }
+  })
 })
 
-server.start(
-  {
-    playground: process.env.NODE_ENV === 'production' ? false : '/'
-  },
-  () => {
-    console.log('The server is running on http://localhost:4000')
-  }
-)
+server.start(() => console.log(`GraphQL server is running on http://localhost:4000`))

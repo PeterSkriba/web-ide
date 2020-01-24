@@ -1,0 +1,13 @@
+type User {
+  id: ID! @id
+  username: String!
+  email: String! @unique
+  codes: [Code!] @relation(link: INLINE)
+}
+
+type Code {
+  id: ID! @id
+  author_id: ID!
+  body: String!
+  tests: [Boolean]!
+}
