@@ -2,13 +2,35 @@
 
 type Query {
   user(email: String!): User
+  exercise(title: String!): Exercise
+  code(user_id: ID!, exercise_id: ID!): Code
 }
 
 type Mutation {
   createUser(data: createUserInput!): User
+  createCode(data: createCodeInput!): Code
+  createExercise(data: createExerciseInput!): Exercise
 }
 
 input createUserInput {
   username: String
+  first_name: String
+  last_name: String
   email: String
+  password: String
+}
+
+input createCodeInput {
+  user_id: ID
+  exercise_id: ID
+  body: String
+  tests: [Boolean]
+}
+
+input createExerciseInput {
+  title: String
+  body: String
+  description: String
+  stdin: [String]
+  stdout: [String]
 }

@@ -1,13 +1,32 @@
 type User {
   id: ID! @id
   username: String!
+  first_name: String!
+  last_name: String!
   email: String! @unique
+  password: String!
   codes: [Code!] @relation(link: INLINE)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Code {
   id: ID! @id
-  author_id: ID!
+  user_id: ID!
+  exercise_id: ID!
   body: String!
   tests: [Boolean]!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Exercise {
+  id: ID! @id
+  title: String! @unique
+  body: String
+  description: String!
+  stdin: [String]!
+  stdout: [String]!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }

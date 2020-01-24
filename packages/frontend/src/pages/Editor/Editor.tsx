@@ -7,7 +7,7 @@ import Looks3RoundedIcon from '@material-ui/icons/Looks3Rounded';
 import { Monaco, SnackBar } from 'components';
 
 import { useQuery } from '@apollo/react-hooks'
-import { CODE, EXERCISE } from 'apollo/queries'
+import { USER, CODE, EXERCISE } from 'apollo/queries'
 
 import * as S from './styled'
 
@@ -68,14 +68,23 @@ const Editor = () => {
     }
   }
 
+  const { loading: user_loading, data: user_data } = useQuery(USER, {
+    variables: {
+      email: "peterskriba@hotmail.com"
+    }
+  })
+
   const { loading: exercise_loading, data: exercise_data } = useQuery(EXERCISE, {
-    variables: { id: 0 }
+    variables: {
+      title: "Exercise 1"
+    }
   })
 
   const { loading: code_loading, data: code_data } = useQuery(CODE, {
+    skip: !exercise_data || !user_data,
     variables: {
-      user_id: 0,
-      exercise_id: exercise_data?.exercise?.exercise_id | -1
+      user_id: user_data?.user?.id,
+      exercise_id: exercise_data?.exercise?.id
     }
   })
 
@@ -88,15 +97,14 @@ const Editor = () => {
       onMouseUp={handleStopDragging}
       onMouseMove={handleDragging}
     >
-      <S.Header></S.Header>
-
+      <header></header>
       <S.Container onKeyDown={handleKeyPress} tabIndex="0">
 
         <S.Wrapper style={{ width: `calc(${mousePos.x}% - 10px)` }}>
           <S.Box type="editor">
             <S.BoxHeader>
               <CodeRounded fontSize="small" />
-              { (!exercise_loading) ? getClangTitle(exercise_data?.exercise?.title) : "" }
+              {!exercise_loading && getClangTitle(exercise_data?.exercise?.title)}
               <div>
                 <S.CircleButton onClick={save} color="orange">
                   <S.Tooltip left="-35px">Click to save</S.Tooltip>
@@ -106,7 +114,7 @@ const Editor = () => {
                 </S.CircleButton>
               </div>
             </S.BoxHeader>
-            <Monaco code={code_data?.code?.body} focus />
+            <Monaco code={exercise_data?.code?.body} focus />
           </S.Box>
 
           <S.Box type="log" isOpen={logIsOpen}>
@@ -117,9 +125,7 @@ const Editor = () => {
                   <S.Tooltip left="-40px">Click to close</S.Tooltip>
                 </S.CircleButton>
               </S.BoxHeader>
-              <p>
-                log
-              </p>
+              <p>{user_data?.user?.username}</p>
             </div>
           </S.Box>
         </S.Wrapper>
@@ -130,7 +136,32 @@ const Editor = () => {
           <S.Box type="inout" style={{ height: `calc(${mousePos.y}% - 10px)` }} >
             <S.BoxHeader>
               Stdin
-              <div>
+              
+            </S.BoxHeader>
+            <Monaco code={exercise_data?.exercise?.stdin[testActive]} />
+          </S.Box>
+
+          <S.Divider isHorizontal onMouseDown={() => setVerDragging(true)} />
+
+          <S.Box type="inout" style={{ height: `calc(${100 - mousePos.y}% - 10px)` }} >
+            <S.BoxHeader>Stdout</S.BoxHeader>
+            <Monaco code="" readOnly />
+          </S.Box>
+        </S.Wrapper>
+      </S.Container>
+
+      <footer><p>&copy; 2020 Peter Škríba</p></footer>
+
+      <SnackBar
+        message={snackbarState.message}
+        isOpen={snackbarState.isOpen}
+        onClose={() => setSnackbarState({ ...snackbarState, isOpen: false })}
+      />
+    </S.Main>
+  )
+}
+
+/*<div>
                 <S.TestButton
                   onClick={() => setTestActive(0)}
                   isActive={testActive === 0}
@@ -155,30 +186,6 @@ const Editor = () => {
                 >
                   <Looks3RoundedIcon fontSize="small" />
                 </S.TestButton>
-              </div>
-            </S.BoxHeader>
-            <Monaco code={exercise_data?.exercise?.stdin[testActive]} />
-          </S.Box>
-
-          <S.Divider isHorizontal onMouseDown={() => setVerDragging(true)} />
-
-          <S.Box type="inout" style={{ height: `calc(${100 - mousePos.y}% - 10px)` }} >
-            <S.BoxHeader>Stdout</S.BoxHeader>
-            <Monaco code="" readOnly />
-          </S.Box>
-        </S.Wrapper>
-
-      </S.Container>
-
-      <S.Footer><p>&copy; 2020 Peter Škríba</p></S.Footer>
-
-      <SnackBar
-        message={snackbarState.message}
-        isOpen={snackbarState.isOpen}
-        onClose={() => setSnackbarState({ ...snackbarState, isOpen: false })}
-      />
-    </S.Main>
-  )
-}
+              </div>*/
 
 export default Editor

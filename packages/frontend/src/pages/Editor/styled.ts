@@ -160,22 +160,3 @@ export const TestButton = styled.div`
   color: ${p => p.isOk && colors.btnGreen || p.isFail && colors.btnRed};
   :hover { transform: scale(1.1); }
 `
-
-export const Footer = styled.footer`
-  ${common.flexCenterVH}
-  flex-grow: 1;
-  flex-shrink: 1;
-  width: 100%;
-  font-size: 12px;
-  /*max-height: 100px;*/
-  min-height: 80px;
-  /* MOZNO PADDING */
-`
-
-export const Header = styled.header`
-  ${common.flexCenterVH}
-  flex-grow: 1;
-  flex-shrink: 1;
-  width: 100%;
-  min-height: 80px;
-`

@@ -1,7 +1,11 @@
 # source: http://localhost:4466
-# timestamp: Fri Jan 24 2020 11:28:35 GMT+0100 (Central European Standard Time)
+# timestamp: Fri Jan 24 2020 18:34:17 GMT+0100 (Central European Standard Time)
 
 type AggregateCode {
+  count: Int!
+}
+
+type AggregateExercise {
   count: Int!
 }
 
@@ -16,9 +20,12 @@ type BatchPayload {
 
 type Code implements Node {
   id: ID!
-  author_id: ID!
+  user_id: ID!
+  exercise_id: ID!
   body: String!
   tests: [Boolean!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -33,7 +40,8 @@ type CodeConnection {
 
 input CodeCreateInput {
   id: ID
-  author_id: ID!
+  user_id: ID!
+  exercise_id: ID!
   body: String!
   tests: CodeCreatetestsInput
 }
@@ -59,17 +67,26 @@ type CodeEdge {
 enum CodeOrderByInput {
   id_ASC
   id_DESC
-  author_id_ASC
-  author_id_DESC
+  user_id_ASC
+  user_id_DESC
+  exercise_id_ASC
+  exercise_id_DESC
   body_ASC
   body_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type CodePreviousValues {
   id: ID!
-  author_id: ID!
+  user_id: ID!
+  exercise_id: ID!
   body: String!
   tests: [Boolean!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input CodeScalarWhereInput {
@@ -121,46 +138,86 @@ input CodeScalarWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  author_id: ID
+  user_id: ID
 
   """All values that are not equal to given value."""
-  author_id_not: ID
+  user_id_not: ID
 
   """All values that are contained in given list."""
-  author_id_in: [ID!]
+  user_id_in: [ID!]
 
   """All values that are not contained in given list."""
-  author_id_not_in: [ID!]
+  user_id_not_in: [ID!]
 
   """All values less than the given value."""
-  author_id_lt: ID
+  user_id_lt: ID
 
   """All values less than or equal the given value."""
-  author_id_lte: ID
+  user_id_lte: ID
 
   """All values greater than the given value."""
-  author_id_gt: ID
+  user_id_gt: ID
 
   """All values greater than or equal the given value."""
-  author_id_gte: ID
+  user_id_gte: ID
 
   """All values containing the given string."""
-  author_id_contains: ID
+  user_id_contains: ID
 
   """All values not containing the given string."""
-  author_id_not_contains: ID
+  user_id_not_contains: ID
 
   """All values starting with the given string."""
-  author_id_starts_with: ID
+  user_id_starts_with: ID
 
   """All values not starting with the given string."""
-  author_id_not_starts_with: ID
+  user_id_not_starts_with: ID
 
   """All values ending with the given string."""
-  author_id_ends_with: ID
+  user_id_ends_with: ID
 
   """All values not ending with the given string."""
-  author_id_not_ends_with: ID
+  user_id_not_ends_with: ID
+  exercise_id: ID
+
+  """All values that are not equal to given value."""
+  exercise_id_not: ID
+
+  """All values that are contained in given list."""
+  exercise_id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  exercise_id_not_in: [ID!]
+
+  """All values less than the given value."""
+  exercise_id_lt: ID
+
+  """All values less than or equal the given value."""
+  exercise_id_lte: ID
+
+  """All values greater than the given value."""
+  exercise_id_gt: ID
+
+  """All values greater than or equal the given value."""
+  exercise_id_gte: ID
+
+  """All values containing the given string."""
+  exercise_id_contains: ID
+
+  """All values not containing the given string."""
+  exercise_id_not_contains: ID
+
+  """All values starting with the given string."""
+  exercise_id_starts_with: ID
+
+  """All values not starting with the given string."""
+  exercise_id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  exercise_id_ends_with: ID
+
+  """All values not ending with the given string."""
+  exercise_id_not_ends_with: ID
   body: String
 
   """All values that are not equal to given value."""
@@ -201,6 +258,50 @@ input CodeScalarWhereInput {
 
   """All values not ending with the given string."""
   body_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 type CodeSubscriptionPayload {
@@ -235,19 +336,22 @@ input CodeSubscriptionWhereInput {
 }
 
 input CodeUpdateDataInput {
-  author_id: ID
+  user_id: ID
+  exercise_id: ID
   body: String
   tests: CodeUpdatetestsInput
 }
 
 input CodeUpdateInput {
-  author_id: ID
+  user_id: ID
+  exercise_id: ID
   body: String
   tests: CodeUpdatetestsInput
 }
 
 input CodeUpdateManyDataInput {
-  author_id: ID
+  user_id: ID
+  exercise_id: ID
   body: String
   tests: CodeUpdatetestsInput
 }
@@ -265,7 +369,8 @@ input CodeUpdateManyInput {
 }
 
 input CodeUpdateManyMutationInput {
-  author_id: ID
+  user_id: ID
+  exercise_id: ID
   body: String
   tests: CodeUpdatetestsInput
 }
@@ -333,46 +438,86 @@ input CodeWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  author_id: ID
+  user_id: ID
 
   """All values that are not equal to given value."""
-  author_id_not: ID
+  user_id_not: ID
 
   """All values that are contained in given list."""
-  author_id_in: [ID!]
+  user_id_in: [ID!]
 
   """All values that are not contained in given list."""
-  author_id_not_in: [ID!]
+  user_id_not_in: [ID!]
 
   """All values less than the given value."""
-  author_id_lt: ID
+  user_id_lt: ID
 
   """All values less than or equal the given value."""
-  author_id_lte: ID
+  user_id_lte: ID
 
   """All values greater than the given value."""
-  author_id_gt: ID
+  user_id_gt: ID
 
   """All values greater than or equal the given value."""
-  author_id_gte: ID
+  user_id_gte: ID
 
   """All values containing the given string."""
-  author_id_contains: ID
+  user_id_contains: ID
 
   """All values not containing the given string."""
-  author_id_not_contains: ID
+  user_id_not_contains: ID
 
   """All values starting with the given string."""
-  author_id_starts_with: ID
+  user_id_starts_with: ID
 
   """All values not starting with the given string."""
-  author_id_not_starts_with: ID
+  user_id_not_starts_with: ID
 
   """All values ending with the given string."""
-  author_id_ends_with: ID
+  user_id_ends_with: ID
 
   """All values not ending with the given string."""
-  author_id_not_ends_with: ID
+  user_id_not_ends_with: ID
+  exercise_id: ID
+
+  """All values that are not equal to given value."""
+  exercise_id_not: ID
+
+  """All values that are contained in given list."""
+  exercise_id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  exercise_id_not_in: [ID!]
+
+  """All values less than the given value."""
+  exercise_id_lt: ID
+
+  """All values less than or equal the given value."""
+  exercise_id_lte: ID
+
+  """All values greater than the given value."""
+  exercise_id_gt: ID
+
+  """All values greater than or equal the given value."""
+  exercise_id_gte: ID
+
+  """All values containing the given string."""
+  exercise_id_contains: ID
+
+  """All values not containing the given string."""
+  exercise_id_not_contains: ID
+
+  """All values starting with the given string."""
+  exercise_id_starts_with: ID
+
+  """All values not starting with the given string."""
+  exercise_id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  exercise_id_ends_with: ID
+
+  """All values not ending with the given string."""
+  exercise_id_not_ends_with: ID
   body: String
 
   """All values that are not equal to given value."""
@@ -413,10 +558,398 @@ input CodeWhereInput {
 
   """All values not ending with the given string."""
   body_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 input CodeWhereUniqueInput {
   id: ID
+}
+
+scalar DateTime
+
+type Exercise implements Node {
+  id: ID!
+  title: String!
+  body: String
+  description: String!
+  stdin: [String!]!
+  stdout: [String!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type ExerciseConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ExerciseEdge]!
+  aggregate: AggregateExercise!
+}
+
+input ExerciseCreateInput {
+  id: ID
+  title: String!
+  body: String
+  description: String!
+  stdin: ExerciseCreatestdinInput
+  stdout: ExerciseCreatestdoutInput
+}
+
+input ExerciseCreatestdinInput {
+  set: [String!]
+}
+
+input ExerciseCreatestdoutInput {
+  set: [String!]
+}
+
+"""An edge in a connection."""
+type ExerciseEdge {
+  """The item at the end of the edge."""
+  node: Exercise!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ExerciseOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  body_ASC
+  body_DESC
+  description_ASC
+  description_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type ExercisePreviousValues {
+  id: ID!
+  title: String!
+  body: String
+  description: String!
+  stdin: [String!]!
+  stdout: [String!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ExerciseSubscriptionPayload {
+  mutation: MutationType!
+  node: Exercise
+  updatedFields: [String!]
+  previousValues: ExercisePreviousValues
+}
+
+input ExerciseSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ExerciseSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ExerciseWhereInput
+}
+
+input ExerciseUpdateInput {
+  title: String
+  body: String
+  description: String
+  stdin: ExerciseUpdatestdinInput
+  stdout: ExerciseUpdatestdoutInput
+}
+
+input ExerciseUpdateManyMutationInput {
+  title: String
+  body: String
+  description: String
+  stdin: ExerciseUpdatestdinInput
+  stdout: ExerciseUpdatestdoutInput
+}
+
+input ExerciseUpdatestdinInput {
+  set: [String!]
+}
+
+input ExerciseUpdatestdoutInput {
+  set: [String!]
+}
+
+input ExerciseWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ExerciseWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  body: String
+
+  """All values that are not equal to given value."""
+  body_not: String
+
+  """All values that are contained in given list."""
+  body_in: [String!]
+
+  """All values that are not contained in given list."""
+  body_not_in: [String!]
+
+  """All values less than the given value."""
+  body_lt: String
+
+  """All values less than or equal the given value."""
+  body_lte: String
+
+  """All values greater than the given value."""
+  body_gt: String
+
+  """All values greater than or equal the given value."""
+  body_gte: String
+
+  """All values containing the given string."""
+  body_contains: String
+
+  """All values not containing the given string."""
+  body_not_contains: String
+
+  """All values starting with the given string."""
+  body_starts_with: String
+
+  """All values not starting with the given string."""
+  body_not_starts_with: String
+
+  """All values ending with the given string."""
+  body_ends_with: String
+
+  """All values not ending with the given string."""
+  body_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+input ExerciseWhereUniqueInput {
+  id: ID
+  title: String
 }
 
 """
@@ -427,16 +960,22 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
+  createExercise(data: ExerciseCreateInput!): Exercise!
   createCode(data: CodeCreateInput!): Code!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateExercise(data: ExerciseUpdateInput!, where: ExerciseWhereUniqueInput!): Exercise
   updateCode(data: CodeUpdateInput!, where: CodeWhereUniqueInput!): Code
   deleteUser(where: UserWhereUniqueInput!): User
+  deleteExercise(where: ExerciseWhereUniqueInput!): Exercise
   deleteCode(where: CodeWhereUniqueInput!): Code
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertExercise(where: ExerciseWhereUniqueInput!, create: ExerciseCreateInput!, update: ExerciseUpdateInput!): Exercise!
   upsertCode(where: CodeWhereUniqueInput!, create: CodeCreateInput!, update: CodeUpdateInput!): Code!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  updateManyExercises(data: ExerciseUpdateManyMutationInput!, where: ExerciseWhereInput): BatchPayload!
   updateManyCodes(data: CodeUpdateManyMutationInput!, where: CodeWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyExercises(where: ExerciseWhereInput): BatchPayload!
   deleteManyCodes(where: CodeWhereInput): BatchPayload!
 }
 
@@ -469,10 +1008,13 @@ type PageInfo {
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  exercises(where: ExerciseWhereInput, orderBy: ExerciseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Exercise]!
   codes(where: CodeWhereInput, orderBy: CodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Code]!
   user(where: UserWhereUniqueInput!): User
+  exercise(where: ExerciseWhereUniqueInput!): Exercise
   code(where: CodeWhereUniqueInput!): Code
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  exercisesConnection(where: ExerciseWhereInput, orderBy: ExerciseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExerciseConnection!
   codesConnection(where: CodeWhereInput, orderBy: CodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CodeConnection!
 
   """Fetches an object given its ID"""
@@ -484,14 +1026,20 @@ type Query {
 
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  exercise(where: ExerciseSubscriptionWhereInput): ExerciseSubscriptionPayload
   code(where: CodeSubscriptionWhereInput): CodeSubscriptionPayload
 }
 
 type User implements Node {
   id: ID!
   username: String!
+  first_name: String!
+  last_name: String!
   email: String!
+  password: String!
   codes(where: CodeWhereInput, orderBy: CodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Code!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -507,7 +1055,10 @@ type UserConnection {
 input UserCreateInput {
   id: ID
   username: String!
+  first_name: String!
+  last_name: String!
   email: String!
+  password: String!
   codes: CodeCreateManyInput
 }
 
@@ -525,14 +1076,29 @@ enum UserOrderByInput {
   id_DESC
   username_ASC
   username_DESC
+  first_name_ASC
+  first_name_DESC
+  last_name_ASC
+  last_name_DESC
   email_ASC
   email_DESC
+  password_ASC
+  password_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type UserPreviousValues {
   id: ID!
   username: String!
+  first_name: String!
+  last_name: String!
   email: String!
+  password: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserSubscriptionPayload {
@@ -568,13 +1134,19 @@ input UserSubscriptionWhereInput {
 
 input UserUpdateInput {
   username: String
+  first_name: String
+  last_name: String
   email: String
+  password: String
   codes: CodeUpdateManyInput
 }
 
 input UserUpdateManyMutationInput {
   username: String
+  first_name: String
+  last_name: String
   email: String
+  password: String
 }
 
 input UserWhereInput {
@@ -660,6 +1232,86 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   username_not_ends_with: String
+  first_name: String
+
+  """All values that are not equal to given value."""
+  first_name_not: String
+
+  """All values that are contained in given list."""
+  first_name_in: [String!]
+
+  """All values that are not contained in given list."""
+  first_name_not_in: [String!]
+
+  """All values less than the given value."""
+  first_name_lt: String
+
+  """All values less than or equal the given value."""
+  first_name_lte: String
+
+  """All values greater than the given value."""
+  first_name_gt: String
+
+  """All values greater than or equal the given value."""
+  first_name_gte: String
+
+  """All values containing the given string."""
+  first_name_contains: String
+
+  """All values not containing the given string."""
+  first_name_not_contains: String
+
+  """All values starting with the given string."""
+  first_name_starts_with: String
+
+  """All values not starting with the given string."""
+  first_name_not_starts_with: String
+
+  """All values ending with the given string."""
+  first_name_ends_with: String
+
+  """All values not ending with the given string."""
+  first_name_not_ends_with: String
+  last_name: String
+
+  """All values that are not equal to given value."""
+  last_name_not: String
+
+  """All values that are contained in given list."""
+  last_name_in: [String!]
+
+  """All values that are not contained in given list."""
+  last_name_not_in: [String!]
+
+  """All values less than the given value."""
+  last_name_lt: String
+
+  """All values less than or equal the given value."""
+  last_name_lte: String
+
+  """All values greater than the given value."""
+  last_name_gt: String
+
+  """All values greater than or equal the given value."""
+  last_name_gte: String
+
+  """All values containing the given string."""
+  last_name_contains: String
+
+  """All values not containing the given string."""
+  last_name_not_contains: String
+
+  """All values starting with the given string."""
+  last_name_starts_with: String
+
+  """All values not starting with the given string."""
+  last_name_not_starts_with: String
+
+  """All values ending with the given string."""
+  last_name_ends_with: String
+
+  """All values not ending with the given string."""
+  last_name_not_ends_with: String
   email: String
 
   """All values that are not equal to given value."""
@@ -700,6 +1352,90 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   email_not_ends_with: String
+  password: String
+
+  """All values that are not equal to given value."""
+  password_not: String
+
+  """All values that are contained in given list."""
+  password_in: [String!]
+
+  """All values that are not contained in given list."""
+  password_not_in: [String!]
+
+  """All values less than the given value."""
+  password_lt: String
+
+  """All values less than or equal the given value."""
+  password_lte: String
+
+  """All values greater than the given value."""
+  password_gt: String
+
+  """All values greater than or equal the given value."""
+  password_gte: String
+
+  """All values containing the given string."""
+  password_contains: String
+
+  """All values not containing the given string."""
+  password_not_contains: String
+
+  """All values starting with the given string."""
+  password_starts_with: String
+
+  """All values not starting with the given string."""
+  password_not_starts_with: String
+
+  """All values ending with the given string."""
+  password_ends_with: String
+
+  """All values not ending with the given string."""
+  password_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
   codes_some: CodeWhereInput
 }
 

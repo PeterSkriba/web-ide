@@ -5,7 +5,3 @@ databaseType: document
 hooks:
   post-deploy:
     - graphql get-schema -p prisma
-
-#generate:
-#  - generator: typescript-client
-#    output: '/src/generated/prisma-client'

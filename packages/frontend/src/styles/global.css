@@ -28,7 +28,33 @@ button {
   cursor: pointer;
 }
 
-/* editor */
+/* LAYOUT */
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  flex-shrink: 1;
+  width: 100%;
+  font-size: 12px;
+  /*max-height: 100px;*/
+  min-height: 80px;
+  /* maybe padding */
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  flex-shrink: 1;
+  width: 100%;
+  min-height: 80px;
+}
+
+
+/* EDITOR */
 
 .monaco-editor, .margin, .monaco-editor-background {
   background-color: transparent !important;
