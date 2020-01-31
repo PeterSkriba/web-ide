@@ -12,7 +12,7 @@ type Mutation {
   createExercise(data: createExerciseInput!): Exercise
 
   updateCode(data: updateCodeDataInput!, where: updateCodeWhereInput!): Code
-  runCode(code_id: ID!, test_no: Int!): runCodeOutput
+  runCode(code_id: ID!, test_no: Int!, test_body: String!): runCodeOutput
 }
 
 type runCodeOutput {

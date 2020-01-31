@@ -15,7 +15,7 @@ export default async (_, args, ctx, info) => {
 
   const res = await cpp.runSource(
     code.body,
-    { stdin: code.exercise.stdin[args.test_no]},
+    { stdin: args.test_body},
     (err) => { err && console.log(err) }
   )
 

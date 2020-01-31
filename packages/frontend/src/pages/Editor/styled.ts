@@ -2,10 +2,9 @@ import styled, { css } from 'styled-components'
 import { colors } from 'styles/variables'
 import * as common from 'styles/common'
 
-export const Main = styled.main`
+export const Main = styled.div`
   ${common.flexCenterVH}
-  min-height: 100vh;
-  flex-direction: column;
+  width: 100%;
 `
 
 export const Container = styled.div`
@@ -157,7 +156,12 @@ export const TestButton = styled.div`
   :hover { transform: scale(1.1); }
 `
 
+// sidebar
 export const Sidebar = styled.aside`
+  //height: 100vh;
+  height: 750px;
+  background: red;
   width: 200px;
-  height: 100vh;
+  //margin-top: -80px;
+  //margin-bottom: -80px;
 `

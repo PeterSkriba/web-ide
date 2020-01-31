@@ -53,7 +53,7 @@ const Editor = () => {
     }
   })
 
-  const { loading: code_loading, data: code_data } = useQuery(CODE, {
+  const { loading: code_loading, data: code_data, refetch: code_refetch } = useQuery(CODE, {
     skip: exercise_loading || user_loading,
     variables: {
       user_id: user_data?.user?.id,
@@ -65,12 +65,16 @@ const Editor = () => {
   const [code, setCode] = useState<string>('loading...')
   const [output, setOutput] = useState<Output>({ output: '', log: '', exitCode: 0 })
   const [run_code] = useMutation(RUN_CODE)
+  const [stdin, setStdin] = useState<string>('loading...')
 
   useEffect(() => {
     const codeBody = code_data?.codeOwn?.body
+    const stdinBody = exercise_data?.exercise?.stdin[testActive]
     if (codeBody) setCode(codeBody)
+    if (stdinBody) setStdin(stdinBody)
     if (output.log) setLogIsOpen(true)
-  }, [code_data, output.log])
+    else setLogIsOpen(false)
+  }, [code_data, output.log, exercise_data, testActive])
 
   const save = () => {
     if (!code_loading)
@@ -79,19 +83,29 @@ const Editor = () => {
         data: { body: code }
       }})
     setSnackbarState({ message: 'Successfully saved', isOpen: true })
-    return true
   }
 
   const run = () => {
-    if (save())
-      run_code({variables: {
-        code_id: code_data?.codeOwn?.id,
-        test_no: testActive
-      }}).then(res => setOutput({
-        output: res.data.runCode.output,
-        log: res.data.runCode.log,
-        exitCode: res.data.runCode.exitCode
-      }))
+    if (!code_loading)
+      update_code({variables: {
+        where: { id: code_data?.codeOwn?.id },
+        data: { body: code }
+      }})
+      .then(() =>
+        run_code({variables: {
+          code_id: code_data?.codeOwn?.id,
+          test_no: testActive,
+          test_body: stdin
+        }})
+        .then(res => {
+          setOutput({
+            output: res.data.runCode.output,
+            log: res.data.runCode.log,
+            exitCode: res.data.runCode.exitCode
+          })
+          code_refetch()
+        })
+      )
     setSnackbarState({ message: 'Running', isOpen: true })
   }
 
@@ -128,9 +142,8 @@ const Editor = () => {
       onMouseUp={handleStopDragging}
       onMouseMove={handleDragging}
     >
-      <header></header>
+      <S.Sidebar></S.Sidebar>
       <S.Container onKeyDown={handleKeyPress} tabIndex="0">
-
         <S.Wrapper style={{ width: `calc(${mousePos.x}% - 10px)` }}>
           <S.Box type="editor">
             <S.BoxHeader>
@@ -192,7 +205,7 @@ const Editor = () => {
                 </S.TestButton>
               </div>
             </S.BoxHeader>
-            <Monaco code={exercise_data?.exercise?.stdin[testActive]} />
+            <Monaco code={stdin} setCode={setStdin} />
           </S.Box>
 
           <S.Divider isHorizontal onMouseDown={() => setVerDragging(true)} />
@@ -207,8 +220,6 @@ const Editor = () => {
           </S.Box>
         </S.Wrapper>
       </S.Container>
-
-      <footer><p>&copy; 2020 Peter Škríba</p></footer>
 
       <SnackBar
         message={snackbarState.message}
