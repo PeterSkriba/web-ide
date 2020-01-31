@@ -1,4 +1,4 @@
-# import User, Exercise, Code from 'generated/prisma.graphql'
+# import * from 'generated/prisma.graphql'
 
 type Query {
   user(email: String!): User
@@ -39,7 +39,7 @@ input createUserInput {
 
 input createCodeInput {
   body: String
-  tests: [Boolean]
+  tests: [Int]
 }
 
 input createExerciseInput {

@@ -68,10 +68,6 @@ header {
   display: none;
 }
 
-.minimap {
-  left: 426px !important;
-}
-
 .scroll-decoration {
   width: 100% !important;
 }

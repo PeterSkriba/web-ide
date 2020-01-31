@@ -2,8 +2,6 @@ import styled, { css } from 'styled-components'
 import { colors } from 'styles/variables'
 import * as common from 'styles/common'
 
-// https://medium.com/@uiuxlab/the-most-used-responsive-breakpoints-in-2017-of-mine-9588e9bd3a8a
-
 export const Main = styled.main`
   ${common.flexCenterVH}
   min-height: 100vh;
@@ -14,8 +12,6 @@ export const Container = styled.div`
   transition: all 500ms linear;
   display: flex;
   height: 750px;
-  /* min-height: 750px; */
-  /* height: 100%; */
   width: 100%;
   max-width: 1700px;
   padding: 0 8%;
@@ -39,11 +35,11 @@ const hide = css`
   max-height: 0 !important;
   margin-top: 0 !important;
   overflow: hidden;
-  //display: none;
 `
 
 const log = css`
   margin-top: 20px;
+  max-height: 999px;
   pre {
     max-height: 200px;
     min-height: 60px;
@@ -52,6 +48,8 @@ const log = css`
     overflow-y: auto;
     white-space: pre-wrap;
   }
+  transition-property: max-height, margin-top;
+  transition: ${p => p.isOpen ? '1s' : '.5s'} cubic-bezier(0, 1, 0, 1);
   ${p => !p.isOpen && hide};
 `
 
@@ -157,4 +155,9 @@ export const TestButton = styled.div`
   ${p => p.isActive && 'margin-top: -5px'};
   color: ${p => p.isOk && colors.btnGreen || p.isFail && colors.btnRed};
   :hover { transform: scale(1.1); }
+`
+
+export const Sidebar = styled.aside`
+  width: 200px;
+  height: 100vh;
 `

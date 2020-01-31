@@ -15,7 +15,7 @@ type Code {
   user: User! @relation(link: INLINE)
   exercise: Exercise! @relation(link: INLINE)
   body: String!
-  tests: [Boolean]!
+  tests: [Int]!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

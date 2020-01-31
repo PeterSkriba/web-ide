@@ -28,10 +28,14 @@ type Output = {
   exitCode: number
 }
 
+enum TestStatus { NONE, OK, FAIL }
+
 const Editor = () => {
   const [horDragging, setHorDragging] = useState<boolean>(false)
   const [verDragging, setVerDragging] = useState<boolean>(false)
   const [mousePos, setMousePos] = useState<MousePos>({ x: 70, y: 50 })
+
+  const [snackbarState, setSnackbarState] = useState<SnackbarState>({ message: 'loading...', isOpen: false })
 
   const [logIsOpen, setLogIsOpen] = useState<boolean>(false)
 
@@ -59,11 +63,7 @@ const Editor = () => {
 
   const [update_code] = useMutation(UPDATE_CODE)
   const [code, setCode] = useState<string>('loading...')
-  const [output, setOutput] = useState<Output>({
-    output: "",
-    log: "",
-    exitCode: 0
-  })
+  const [output, setOutput] = useState<Output>({ output: '', log: '', exitCode: 0 })
   const [run_code] = useMutation(RUN_CODE)
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const Editor = () => {
       update_code({variables: {
         where: { id: code_data?.codeOwn?.id },
         data: { body: code }
-        }})
+      }})
     setSnackbarState({ message: 'Successfully saved', isOpen: true })
     return true
   }
@@ -107,11 +107,6 @@ const Editor = () => {
     setHorDragging(false)
     setVerDragging(false)
   }
-
-  const [snackbarState, setSnackbarState] = useState<SnackbarState>({
-    message: '',
-    isOpen: false
-  })
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if ((e.ctrlKey || e.metaKey) && e.keyCode === 83) {
@@ -174,24 +169,24 @@ const Editor = () => {
                 <S.TestButton
                   onClick={() => setTestActive(0)}
                   isActive={testActive === 0}
-                  isOk={code_data?.code?.tests[0] == true}
-                  isFail={code_data?.code?.tests[0] == false}
+                  isOk={code_data?.codeOwn?.tests[0] == TestStatus.OK}
+                  isFail={code_data?.codeOwn?.tests[0] == TestStatus.FAIL}
                 >
                   <LooksOneRoundedIcon fontSize="small" />
                 </S.TestButton>
                 <S.TestButton
                   onClick={() => setTestActive(1)}
                   isActive={testActive === 1}
-                  isOk={code_data?.code?.tests[1] == true}
-                  isFail={code_data?.code?.tests[1] == false}
+                  isOk={code_data?.codeOwn?.tests[1] == TestStatus.OK}
+                  isFail={code_data?.codeOwn?.tests[1] == TestStatus.FAIL}
                 >
                   <LooksTwoRoundedIcon fontSize="small" />
                 </S.TestButton>
                 <S.TestButton
                   onClick={() => setTestActive(2)}
                   isActive={testActive === 2}
-                  isOk={code_data?.code?.tests[2] == true}
-                  isFail={code_data?.code?.tests[2] == false}
+                  isOk={code_data?.codeOwn?.tests[2] == TestStatus.OK}
+                  isFail={code_data?.codeOwn?.tests[2] == TestStatus.FAIL}
                 >
                   <Looks3RoundedIcon fontSize="small" />
                 </S.TestButton>
@@ -206,7 +201,7 @@ const Editor = () => {
             <S.BoxHeader>Stdout</S.BoxHeader>
             <Monaco code={
               (output.exitCode && !output.output)
-                ? 'exit code: ' + output.exitCode
+                ? '> exit code: ' + output.exitCode
                 : output.output
             } readOnly />
           </S.Box>

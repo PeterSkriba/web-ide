@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Thu Jan 30 2020 13:33:11 GMT+0100 (Central European Standard Time)
+# timestamp: Fri Jan 31 2020 13:59:22 GMT+0100 (Central European Standard Time)
 
 type AggregateCode {
   count: Int!
@@ -23,7 +23,7 @@ type Code implements Node {
   user: User!
   exercise: Exercise!
   body: String!
-  tests: [Boolean!]!
+  tests: [Int!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -52,7 +52,7 @@ input CodeCreateManyWithoutUserInput {
 }
 
 input CodeCreatetestsInput {
-  set: [Boolean!]
+  set: [Int!]
 }
 
 input CodeCreateWithoutUserInput {
@@ -85,7 +85,7 @@ enum CodeOrderByInput {
 type CodePreviousValues {
   id: ID!
   body: String!
-  tests: [Boolean!]!
+  tests: [Int!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -291,7 +291,7 @@ input CodeUpdateManyWithWhereNestedInput {
 }
 
 input CodeUpdatetestsInput {
-  set: [Boolean!]
+  set: [Int!]
 }
 
 input CodeUpdateWithoutUserDataInput {
