@@ -1,15 +1,32 @@
-# import * from 'generated/prisma.graphql'
+# import User, Exercise, Code from 'generated/prisma.graphql'
 
 type Query {
   user(email: String!): User
   exercise(title: String!): Exercise
-  code(user_id: ID!, exercise_id: ID!): Code
+  codeOwn(user_id: ID!, exercise_id: ID!): Code
 }
 
 type Mutation {
   createUser(data: createUserInput!): User
   createCode(data: createCodeInput!): Code
   createExercise(data: createExerciseInput!): Exercise
+
+  updateCode(data: updateCodeDataInput!, where: updateCodeWhereInput!): Code
+  runCode(code_id: ID!, test_no: Int!): runCodeOutput
+}
+
+type runCodeOutput {
+  output: String
+  log: String
+  exitCode: Int
+}
+
+input updateCodeDataInput {
+  body: String
+}
+
+input updateCodeWhereInput {
+  id: ID
 }
 
 input createUserInput {
@@ -21,8 +38,6 @@ input createUserInput {
 }
 
 input createCodeInput {
-  user_id: ID
-  exercise_id: ID
   body: String
   tests: [Boolean]
 }

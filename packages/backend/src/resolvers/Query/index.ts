@@ -1,9 +1,9 @@
 import user from './user'
 import exercise from './exercise'
-import code from './code'
+import codeOwn from './codeOwn'
 
 export default {
   user,
   exercise,
-  code
+  codeOwn
 }

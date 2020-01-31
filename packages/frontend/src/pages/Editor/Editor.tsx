@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { CodeRounded } from '@material-ui/icons';
 import LooksOneRoundedIcon from '@material-ui/icons/LooksOneRounded';
 import LooksTwoRoundedIcon from '@material-ui/icons/LooksTwoRounded';
@@ -6,8 +6,9 @@ import Looks3RoundedIcon from '@material-ui/icons/Looks3Rounded';
 
 import { Monaco, SnackBar } from 'components';
 
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 import { USER, CODE, EXERCISE } from 'apollo/queries'
+import { UPDATE_CODE, RUN_CODE } from 'apollo/mutations'
 
 import * as S from './styled'
 
@@ -17,8 +18,14 @@ type MousePos = {
 }
 
 type SnackbarState = {
-  message: string,
+  message: string
   isOpen: boolean
+}
+
+type Output = {
+  output: string
+  log: string
+  exitCode: number
 }
 
 const Editor = () => {
@@ -26,9 +33,67 @@ const Editor = () => {
   const [verDragging, setVerDragging] = useState<boolean>(false)
   const [mousePos, setMousePos] = useState<MousePos>({ x: 70, y: 50 })
 
-  const [logIsOpen, setLogIsOpen] = useState<boolean>(true)
+  const [logIsOpen, setLogIsOpen] = useState<boolean>(false)
 
   const [testActive, setTestActive] = useState<number>(0)
+
+  const { loading: user_loading, data: user_data } = useQuery(USER, {
+    variables: {
+      email: "peterskriba@hotmail.com"
+    }
+  })
+
+  const { loading: exercise_loading, data: exercise_data } = useQuery(EXERCISE, {
+    variables: {
+      title: "Exercise 1"
+    }
+  })
+
+  const { loading: code_loading, data: code_data } = useQuery(CODE, {
+    skip: exercise_loading || user_loading,
+    variables: {
+      user_id: user_data?.user?.id,
+      exercise_id: exercise_data?.exercise?.id
+    }
+  })
+
+  const [update_code] = useMutation(UPDATE_CODE)
+  const [code, setCode] = useState<string>('loading...')
+  const [output, setOutput] = useState<Output>({
+    output: "",
+    log: "",
+    exitCode: 0
+  })
+  const [run_code] = useMutation(RUN_CODE)
+
+  useEffect(() => {
+    const codeBody = code_data?.codeOwn?.body
+    if (codeBody) setCode(codeBody)
+    if (output.log) setLogIsOpen(true)
+  }, [code_data, output.log])
+
+  const save = () => {
+    if (!code_loading)
+      update_code({variables: {
+        where: { id: code_data?.codeOwn?.id },
+        data: { body: code }
+        }})
+    setSnackbarState({ message: 'Successfully saved', isOpen: true })
+    return true
+  }
+
+  const run = () => {
+    if (save())
+      run_code({variables: {
+        code_id: code_data?.codeOwn?.id,
+        test_no: testActive
+      }}).then(res => setOutput({
+        output: res.data.runCode.output,
+        log: res.data.runCode.log,
+        exitCode: res.data.runCode.exitCode
+      }))
+    setSnackbarState({ message: 'Running', isOpen: true })
+  }
 
   const handleDragging = (e: React.MouseEvent) => {
     const x = (e.nativeEvent.pageX / window.innerWidth) * 100
@@ -48,15 +113,6 @@ const Editor = () => {
     isOpen: false
   })
 
-  const save = () => {
-    setSnackbarState({ message: 'Successfully saved', isOpen: true })
-  }
-
-  const run = () => {
-    save()
-    setSnackbarState({ message: 'Running', isOpen: true })
-  }
-
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if ((e.ctrlKey || e.metaKey) && e.keyCode === 83) {
       e.preventDefault()
@@ -67,26 +123,6 @@ const Editor = () => {
       run()
     }
   }
-
-  const { loading: user_loading, data: user_data } = useQuery(USER, {
-    variables: {
-      email: "peterskriba@hotmail.com"
-    }
-  })
-
-  const { loading: exercise_loading, data: exercise_data } = useQuery(EXERCISE, {
-    variables: {
-      title: "Exercise 1"
-    }
-  })
-
-  const { loading: code_loading, data: code_data } = useQuery(CODE, {
-    skip: !exercise_data || !user_data,
-    variables: {
-      user_id: user_data?.user?.id,
-      exercise_id: exercise_data?.exercise?.id
-    }
-  })
 
   const getClangTitle = (str: String) => (
     str.replace(/ /g, '-').toLowerCase().replace(/[^a-z0-9]/gi, '').concat('.c')
@@ -114,19 +150,17 @@ const Editor = () => {
                 </S.CircleButton>
               </div>
             </S.BoxHeader>
-            <Monaco code={exercise_data?.code?.body} focus />
+            <Monaco code={code} setCode={setCode} focus />
           </S.Box>
 
           <S.Box type="log" isOpen={logIsOpen}>
-            <div style={{ padding: "25px" }}>
-              <S.BoxHeader>
-                Compile log
-                <S.CircleButton onClick={() => setLogIsOpen(false)} color="red">
-                  <S.Tooltip left="-40px">Click to close</S.Tooltip>
-                </S.CircleButton>
-              </S.BoxHeader>
-              <p>{user_data?.user?.username}</p>
-            </div>
+            <S.BoxHeader>
+              Compile log
+              <S.CircleButton onClick={() => setLogIsOpen(false)} color="red">
+                <S.Tooltip left="-40px">Click to close</S.Tooltip>
+              </S.CircleButton>
+            </S.BoxHeader>
+            <pre>{output.log}</pre>
           </S.Box>
         </S.Wrapper>
 
@@ -136,32 +170,7 @@ const Editor = () => {
           <S.Box type="inout" style={{ height: `calc(${mousePos.y}% - 10px)` }} >
             <S.BoxHeader>
               Stdin
-              
-            </S.BoxHeader>
-            <Monaco code={exercise_data?.exercise?.stdin[testActive]} />
-          </S.Box>
-
-          <S.Divider isHorizontal onMouseDown={() => setVerDragging(true)} />
-
-          <S.Box type="inout" style={{ height: `calc(${100 - mousePos.y}% - 10px)` }} >
-            <S.BoxHeader>Stdout</S.BoxHeader>
-            <Monaco code="" readOnly />
-          </S.Box>
-        </S.Wrapper>
-      </S.Container>
-
-      <footer><p>&copy; 2020 Peter Škríba</p></footer>
-
-      <SnackBar
-        message={snackbarState.message}
-        isOpen={snackbarState.isOpen}
-        onClose={() => setSnackbarState({ ...snackbarState, isOpen: false })}
-      />
-    </S.Main>
-  )
-}
-
-/*<div>
+              <div>
                 <S.TestButton
                   onClick={() => setTestActive(0)}
                   isActive={testActive === 0}
@@ -186,6 +195,33 @@ const Editor = () => {
                 >
                   <Looks3RoundedIcon fontSize="small" />
                 </S.TestButton>
-              </div>*/
+              </div>
+            </S.BoxHeader>
+            <Monaco code={exercise_data?.exercise?.stdin[testActive]} />
+          </S.Box>
+
+          <S.Divider isHorizontal onMouseDown={() => setVerDragging(true)} />
+
+          <S.Box type="inout" style={{ height: `calc(${100 - mousePos.y}% - 10px)` }} >
+            <S.BoxHeader>Stdout</S.BoxHeader>
+            <Monaco code={
+              (output.exitCode && !output.output)
+                ? 'exit code: ' + output.exitCode
+                : output.output
+            } readOnly />
+          </S.Box>
+        </S.Wrapper>
+      </S.Container>
+
+      <footer><p>&copy; 2020 Peter Škríba</p></footer>
+
+      <SnackBar
+        message={snackbarState.message}
+        isOpen={snackbarState.isOpen}
+        onClose={() => setSnackbarState({ ...snackbarState, isOpen: false })}
+      />
+    </S.Main>
+  )
+}
 
 export default Editor

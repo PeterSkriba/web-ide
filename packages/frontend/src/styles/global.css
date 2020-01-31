@@ -68,6 +68,14 @@ header {
   display: none;
 }
 
+.minimap {
+  left: 426px !important;
+}
+
+.scroll-decoration {
+  width: 100% !important;
+}
+
 .current-line {
   background: #0d1024;
   border: 0 !important;
@@ -81,8 +89,11 @@ header {
   width: 8px !important;
 }
 
+.scrollbar {
+  width: 8px !important;
+}
+
 .slider {
-  background: #6a7086;
   opacity: .3;
 }
 
@@ -92,4 +103,27 @@ header {
 
 .react-monaco-editor-container {
   overflow: hidden;
+  padding-bottom: 25px;
+}
+
+/* SCROLLBAR */
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(121, 121, 121, .13);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(121, 121, 121, .18);
 }

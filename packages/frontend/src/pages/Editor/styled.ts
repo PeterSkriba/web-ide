@@ -30,37 +30,32 @@ export const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   min-width: 300px;
-  /* height: 750px; */
   @media only screen and (max-width: 1000px) {
     width: 100% !important;
   }
 `
 
 const hide = css`
-  height: 0 !important;
-  min-height: 0 !important;
-  margin: 0 !important;
+  max-height: 0 !important;
+  margin-top: 0 !important;
   overflow: hidden;
-`
-
-const open = css`
-  min-height: 120px !important;
+  //display: none;
 `
 
 const log = css`
-  transition-property: min-height, margin;
-  transition: 500ms linear;
-  flex-grow: 0;
   margin-top: 20px;
-  max-height: 200px;
-  margin-top: 20px;
-  padding: 0;
-  p { overflow-y: auto; }
-  ${p => p.isOpen ? open : hide};
+  pre {
+    max-height: 200px;
+    min-height: 60px;
+    margin: 0 0 25px 25px;
+    padding-right: 25px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+  }
+  ${p => !p.isOpen && hide};
 `
 
 const editor = css`
-  height: 80%;
   height: 600px !important;
 `
 
@@ -75,19 +70,22 @@ export const Box = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  position: relative;
   background: ${colors.box};
   box-shadow: 6px 6px 15px ${colors.shadow};
   border-radius: 6px;
-  padding: 25px;
-  ${p => p.type == 'log' && log || p.type == 'editor' && editor || p.type == 'inout' && inout}
+  ${p =>
+    p.type == 'log' && log ||
+    p.type == 'editor' && editor ||
+    p.type == 'inout' && inout
+  }
 `
 
 export const BoxHeader = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding-bottom: 25px;
+  height: 66px;
+  padding: 25px;
   align-items: center;
 `
 

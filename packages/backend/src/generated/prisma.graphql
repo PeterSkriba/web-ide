@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Fri Jan 24 2020 18:34:17 GMT+0100 (Central European Standard Time)
+# timestamp: Thu Jan 30 2020 13:33:11 GMT+0100 (Central European Standard Time)
 
 type AggregateCode {
   count: Int!
@@ -20,8 +20,8 @@ type BatchPayload {
 
 type Code implements Node {
   id: ID!
-  user_id: ID!
-  exercise_id: ID!
+  user: User!
+  exercise: Exercise!
   body: String!
   tests: [Boolean!]!
   createdAt: DateTime!
@@ -40,19 +40,26 @@ type CodeConnection {
 
 input CodeCreateInput {
   id: ID
-  user_id: ID!
-  exercise_id: ID!
   body: String!
   tests: CodeCreatetestsInput
+  user: UserCreateOneWithoutCodesInput!
+  exercise: ExerciseCreateOneInput!
 }
 
-input CodeCreateManyInput {
-  create: [CodeCreateInput!]
+input CodeCreateManyWithoutUserInput {
+  create: [CodeCreateWithoutUserInput!]
   connect: [CodeWhereUniqueInput!]
 }
 
 input CodeCreatetestsInput {
   set: [Boolean!]
+}
+
+input CodeCreateWithoutUserInput {
+  id: ID
+  body: String!
+  tests: CodeCreatetestsInput
+  exercise: ExerciseCreateOneInput!
 }
 
 """An edge in a connection."""
@@ -67,10 +74,6 @@ type CodeEdge {
 enum CodeOrderByInput {
   id_ASC
   id_DESC
-  user_id_ASC
-  user_id_DESC
-  exercise_id_ASC
-  exercise_id_DESC
   body_ASC
   body_DESC
   createdAt_ASC
@@ -81,8 +84,6 @@ enum CodeOrderByInput {
 
 type CodePreviousValues {
   id: ID!
-  user_id: ID!
-  exercise_id: ID!
   body: String!
   tests: [Boolean!]!
   createdAt: DateTime!
@@ -138,86 +139,6 @@ input CodeScalarWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  user_id: ID
-
-  """All values that are not equal to given value."""
-  user_id_not: ID
-
-  """All values that are contained in given list."""
-  user_id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  user_id_not_in: [ID!]
-
-  """All values less than the given value."""
-  user_id_lt: ID
-
-  """All values less than or equal the given value."""
-  user_id_lte: ID
-
-  """All values greater than the given value."""
-  user_id_gt: ID
-
-  """All values greater than or equal the given value."""
-  user_id_gte: ID
-
-  """All values containing the given string."""
-  user_id_contains: ID
-
-  """All values not containing the given string."""
-  user_id_not_contains: ID
-
-  """All values starting with the given string."""
-  user_id_starts_with: ID
-
-  """All values not starting with the given string."""
-  user_id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  user_id_ends_with: ID
-
-  """All values not ending with the given string."""
-  user_id_not_ends_with: ID
-  exercise_id: ID
-
-  """All values that are not equal to given value."""
-  exercise_id_not: ID
-
-  """All values that are contained in given list."""
-  exercise_id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  exercise_id_not_in: [ID!]
-
-  """All values less than the given value."""
-  exercise_id_lt: ID
-
-  """All values less than or equal the given value."""
-  exercise_id_lte: ID
-
-  """All values greater than the given value."""
-  exercise_id_gt: ID
-
-  """All values greater than or equal the given value."""
-  exercise_id_gte: ID
-
-  """All values containing the given string."""
-  exercise_id_contains: ID
-
-  """All values not containing the given string."""
-  exercise_id_not_contains: ID
-
-  """All values starting with the given string."""
-  exercise_id_starts_with: ID
-
-  """All values not starting with the given string."""
-  exercise_id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  exercise_id_ends_with: ID
-
-  """All values not ending with the given string."""
-  exercise_id_not_ends_with: ID
   body: String
 
   """All values that are not equal to given value."""
@@ -335,44 +256,33 @@ input CodeSubscriptionWhereInput {
   node: CodeWhereInput
 }
 
-input CodeUpdateDataInput {
-  user_id: ID
-  exercise_id: ID
-  body: String
-  tests: CodeUpdatetestsInput
-}
-
 input CodeUpdateInput {
-  user_id: ID
-  exercise_id: ID
   body: String
   tests: CodeUpdatetestsInput
+  user: UserUpdateOneRequiredWithoutCodesInput
+  exercise: ExerciseUpdateOneRequiredInput
 }
 
 input CodeUpdateManyDataInput {
-  user_id: ID
-  exercise_id: ID
   body: String
   tests: CodeUpdatetestsInput
 }
 
-input CodeUpdateManyInput {
-  create: [CodeCreateInput!]
+input CodeUpdateManyMutationInput {
+  body: String
+  tests: CodeUpdatetestsInput
+}
+
+input CodeUpdateManyWithoutUserInput {
+  create: [CodeCreateWithoutUserInput!]
   connect: [CodeWhereUniqueInput!]
   set: [CodeWhereUniqueInput!]
   disconnect: [CodeWhereUniqueInput!]
   delete: [CodeWhereUniqueInput!]
-  update: [CodeUpdateWithWhereUniqueNestedInput!]
+  update: [CodeUpdateWithWhereUniqueWithoutUserInput!]
   updateMany: [CodeUpdateManyWithWhereNestedInput!]
   deleteMany: [CodeScalarWhereInput!]
-  upsert: [CodeUpsertWithWhereUniqueNestedInput!]
-}
-
-input CodeUpdateManyMutationInput {
-  user_id: ID
-  exercise_id: ID
-  body: String
-  tests: CodeUpdatetestsInput
+  upsert: [CodeUpsertWithWhereUniqueWithoutUserInput!]
 }
 
 input CodeUpdateManyWithWhereNestedInput {
@@ -384,15 +294,21 @@ input CodeUpdatetestsInput {
   set: [Boolean!]
 }
 
-input CodeUpdateWithWhereUniqueNestedInput {
-  where: CodeWhereUniqueInput!
-  data: CodeUpdateDataInput!
+input CodeUpdateWithoutUserDataInput {
+  body: String
+  tests: CodeUpdatetestsInput
+  exercise: ExerciseUpdateOneRequiredInput
 }
 
-input CodeUpsertWithWhereUniqueNestedInput {
+input CodeUpdateWithWhereUniqueWithoutUserInput {
   where: CodeWhereUniqueInput!
-  update: CodeUpdateDataInput!
-  create: CodeCreateInput!
+  data: CodeUpdateWithoutUserDataInput!
+}
+
+input CodeUpsertWithWhereUniqueWithoutUserInput {
+  where: CodeWhereUniqueInput!
+  update: CodeUpdateWithoutUserDataInput!
+  create: CodeCreateWithoutUserInput!
 }
 
 input CodeWhereInput {
@@ -438,86 +354,6 @@ input CodeWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  user_id: ID
-
-  """All values that are not equal to given value."""
-  user_id_not: ID
-
-  """All values that are contained in given list."""
-  user_id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  user_id_not_in: [ID!]
-
-  """All values less than the given value."""
-  user_id_lt: ID
-
-  """All values less than or equal the given value."""
-  user_id_lte: ID
-
-  """All values greater than the given value."""
-  user_id_gt: ID
-
-  """All values greater than or equal the given value."""
-  user_id_gte: ID
-
-  """All values containing the given string."""
-  user_id_contains: ID
-
-  """All values not containing the given string."""
-  user_id_not_contains: ID
-
-  """All values starting with the given string."""
-  user_id_starts_with: ID
-
-  """All values not starting with the given string."""
-  user_id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  user_id_ends_with: ID
-
-  """All values not ending with the given string."""
-  user_id_not_ends_with: ID
-  exercise_id: ID
-
-  """All values that are not equal to given value."""
-  exercise_id_not: ID
-
-  """All values that are contained in given list."""
-  exercise_id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  exercise_id_not_in: [ID!]
-
-  """All values less than the given value."""
-  exercise_id_lt: ID
-
-  """All values less than or equal the given value."""
-  exercise_id_lte: ID
-
-  """All values greater than the given value."""
-  exercise_id_gt: ID
-
-  """All values greater than or equal the given value."""
-  exercise_id_gte: ID
-
-  """All values containing the given string."""
-  exercise_id_contains: ID
-
-  """All values not containing the given string."""
-  exercise_id_not_contains: ID
-
-  """All values starting with the given string."""
-  exercise_id_starts_with: ID
-
-  """All values not starting with the given string."""
-  exercise_id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  exercise_id_ends_with: ID
-
-  """All values not ending with the given string."""
-  exercise_id_not_ends_with: ID
   body: String
 
   """All values that are not equal to given value."""
@@ -602,6 +438,8 @@ input CodeWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  user: UserWhereInput
+  exercise: ExerciseWhereInput
 }
 
 input CodeWhereUniqueInput {
@@ -638,6 +476,11 @@ input ExerciseCreateInput {
   description: String!
   stdin: ExerciseCreatestdinInput
   stdout: ExerciseCreatestdoutInput
+}
+
+input ExerciseCreateOneInput {
+  create: ExerciseCreateInput
+  connect: ExerciseWhereUniqueInput
 }
 
 input ExerciseCreatestdinInput {
@@ -714,6 +557,14 @@ input ExerciseSubscriptionWhereInput {
   node: ExerciseWhereInput
 }
 
+input ExerciseUpdateDataInput {
+  title: String
+  body: String
+  description: String
+  stdin: ExerciseUpdatestdinInput
+  stdout: ExerciseUpdatestdoutInput
+}
+
 input ExerciseUpdateInput {
   title: String
   body: String
@@ -730,12 +581,24 @@ input ExerciseUpdateManyMutationInput {
   stdout: ExerciseUpdatestdoutInput
 }
 
+input ExerciseUpdateOneRequiredInput {
+  create: ExerciseCreateInput
+  connect: ExerciseWhereUniqueInput
+  update: ExerciseUpdateDataInput
+  upsert: ExerciseUpsertNestedInput
+}
+
 input ExerciseUpdatestdinInput {
   set: [String!]
 }
 
 input ExerciseUpdatestdoutInput {
   set: [String!]
+}
+
+input ExerciseUpsertNestedInput {
+  update: ExerciseUpdateDataInput!
+  create: ExerciseCreateInput!
 }
 
 input ExerciseWhereInput {
@@ -960,23 +823,23 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
-  createExercise(data: ExerciseCreateInput!): Exercise!
   createCode(data: CodeCreateInput!): Code!
+  createExercise(data: ExerciseCreateInput!): Exercise!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateExercise(data: ExerciseUpdateInput!, where: ExerciseWhereUniqueInput!): Exercise
   updateCode(data: CodeUpdateInput!, where: CodeWhereUniqueInput!): Code
+  updateExercise(data: ExerciseUpdateInput!, where: ExerciseWhereUniqueInput!): Exercise
   deleteUser(where: UserWhereUniqueInput!): User
-  deleteExercise(where: ExerciseWhereUniqueInput!): Exercise
   deleteCode(where: CodeWhereUniqueInput!): Code
+  deleteExercise(where: ExerciseWhereUniqueInput!): Exercise
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  upsertExercise(where: ExerciseWhereUniqueInput!, create: ExerciseCreateInput!, update: ExerciseUpdateInput!): Exercise!
   upsertCode(where: CodeWhereUniqueInput!, create: CodeCreateInput!, update: CodeUpdateInput!): Code!
+  upsertExercise(where: ExerciseWhereUniqueInput!, create: ExerciseCreateInput!, update: ExerciseUpdateInput!): Exercise!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-  updateManyExercises(data: ExerciseUpdateManyMutationInput!, where: ExerciseWhereInput): BatchPayload!
   updateManyCodes(data: CodeUpdateManyMutationInput!, where: CodeWhereInput): BatchPayload!
+  updateManyExercises(data: ExerciseUpdateManyMutationInput!, where: ExerciseWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
-  deleteManyExercises(where: ExerciseWhereInput): BatchPayload!
   deleteManyCodes(where: CodeWhereInput): BatchPayload!
+  deleteManyExercises(where: ExerciseWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -1008,14 +871,14 @@ type PageInfo {
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  exercises(where: ExerciseWhereInput, orderBy: ExerciseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Exercise]!
   codes(where: CodeWhereInput, orderBy: CodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Code]!
+  exercises(where: ExerciseWhereInput, orderBy: ExerciseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Exercise]!
   user(where: UserWhereUniqueInput!): User
-  exercise(where: ExerciseWhereUniqueInput!): Exercise
   code(where: CodeWhereUniqueInput!): Code
+  exercise(where: ExerciseWhereUniqueInput!): Exercise
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  exercisesConnection(where: ExerciseWhereInput, orderBy: ExerciseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExerciseConnection!
   codesConnection(where: CodeWhereInput, orderBy: CodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CodeConnection!
+  exercisesConnection(where: ExerciseWhereInput, orderBy: ExerciseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExerciseConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -1026,8 +889,8 @@ type Query {
 
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-  exercise(where: ExerciseSubscriptionWhereInput): ExerciseSubscriptionPayload
   code(where: CodeSubscriptionWhereInput): CodeSubscriptionPayload
+  exercise(where: ExerciseSubscriptionWhereInput): ExerciseSubscriptionPayload
 }
 
 type User implements Node {
@@ -1059,7 +922,21 @@ input UserCreateInput {
   last_name: String!
   email: String!
   password: String!
-  codes: CodeCreateManyInput
+  codes: CodeCreateManyWithoutUserInput
+}
+
+input UserCreateOneWithoutCodesInput {
+  create: UserCreateWithoutCodesInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutCodesInput {
+  id: ID
+  username: String!
+  first_name: String!
+  last_name: String!
+  email: String!
+  password: String!
 }
 
 """An edge in a connection."""
@@ -1138,7 +1015,7 @@ input UserUpdateInput {
   last_name: String
   email: String
   password: String
-  codes: CodeUpdateManyInput
+  codes: CodeUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
@@ -1147,6 +1024,26 @@ input UserUpdateManyMutationInput {
   last_name: String
   email: String
   password: String
+}
+
+input UserUpdateOneRequiredWithoutCodesInput {
+  create: UserCreateWithoutCodesInput
+  connect: UserWhereUniqueInput
+  update: UserUpdateWithoutCodesDataInput
+  upsert: UserUpsertWithoutCodesInput
+}
+
+input UserUpdateWithoutCodesDataInput {
+  username: String
+  first_name: String
+  last_name: String
+  email: String
+  password: String
+}
+
+input UserUpsertWithoutCodesInput {
+  update: UserUpdateWithoutCodesDataInput!
+  create: UserCreateWithoutCodesInput!
 }
 
 input UserWhereInput {

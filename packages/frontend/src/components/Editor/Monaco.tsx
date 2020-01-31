@@ -7,18 +7,18 @@ import * as S from './styled'
 
 type Props = {
   code?: string,
+  setCode?: (code) => void,
   focus?: boolean,
   readOnly?: boolean
 }
 
-const Monaco = ({ code = '', focus = false, readOnly = false }: Props) => {
+const Monaco = ({ code = '', setCode, focus = false, readOnly = false }: Props) => {
   const editorDidMount = (editor, monaco) => {
-    console.log('editorDidMount')
     if (focus) editor.focus()
   }
 
   const onChange = (newValue, e) => {
-    console.log('onChange', newValue, e)
+    if (setCode) setCode(newValue)
   }
 
   const options = {
