@@ -9,9 +9,9 @@ type Props = {
 const Layout = ({ children }: Props) => {
   return (
     <S.Main>
-      <header></header>
+      <S.Header></S.Header>
       <S.Content>{children}</S.Content>
-      <footer><p>&copy; 2020 Peter Škríba</p></footer>
+      <S.Footer><p>&copy; 2020 Peter Škríba</p></S.Footer>
     </S.Main>
   )
 }

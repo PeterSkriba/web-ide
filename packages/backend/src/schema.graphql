@@ -7,12 +7,20 @@ type Query {
 }
 
 type Mutation {
+  register(data: createUserInput!): User!
+  login(email: String!, password: String!): LoginResponse!
+
   createUser(data: createUserInput!): User
   createCode(data: createCodeInput!): Code
   createExercise(data: createExerciseInput!): Exercise
 
   updateCode(data: updateCodeDataInput!, where: updateCodeWhereInput!): Code
   runCode(code_id: ID!, test_no: Int!, test_body: String!): runCodeOutput
+}
+
+type LoginResponse {
+  token: String
+  user: User
 }
 
 type runCodeOutput {
@@ -30,11 +38,11 @@ input updateCodeWhereInput {
 }
 
 input createUserInput {
-  username: String
-  first_name: String
-  last_name: String
-  email: String
-  password: String
+  username: String!
+  first_name: String!
+  last_name: String!
+  email: String!
+  password: String!
 }
 
 input createCodeInput {

@@ -3,6 +3,8 @@ import { CodeRounded } from '@material-ui/icons';
 import LooksOneRoundedIcon from '@material-ui/icons/LooksOneRounded';
 import LooksTwoRoundedIcon from '@material-ui/icons/LooksTwoRounded';
 import Looks3RoundedIcon from '@material-ui/icons/Looks3Rounded';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import ArrowForwardIosRoundedIcon from '@material-ui/icons/ArrowForwardIosRounded';
 
 import { Monaco, SnackBar } from 'components';
 
@@ -38,6 +40,7 @@ const Editor = () => {
   const [snackbarState, setSnackbarState] = useState<SnackbarState>({ message: 'loading...', isOpen: false })
 
   const [logIsOpen, setLogIsOpen] = useState<boolean>(false)
+  const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(false)
 
   const [testActive, setTestActive] = useState<number>(0)
 
@@ -133,7 +136,7 @@ const Editor = () => {
     }
   }
 
-  const getClangTitle = (str: String) => (
+  const getClangTitle = (str: String) : String => (
     str.replace(/ /g, '-').toLowerCase().replace(/[^a-z0-9]/gi, '').concat('.c')
   )
 
@@ -142,7 +145,24 @@ const Editor = () => {
       onMouseUp={handleStopDragging}
       onMouseMove={handleDragging}
     >
-      <S.Sidebar></S.Sidebar>
+
+      <S.Sidebar isOpen={sidebarIsOpen}>
+        { /* dorobit */ }
+        <S.ToggleSidebar
+          onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
+          isOpen={sidebarIsOpen}
+        >
+          <ArrowForwardIosRoundedIcon fontSize="small" />
+        </S.ToggleSidebar>
+        <S.BoxHeader>
+          <div>
+            <AssignmentTurnedInIcon fontSize="small" />
+            <h2>{exercise_data?.exercise?.title}</h2>
+          </div>
+        </S.BoxHeader>
+        <pre>{exercise_data?.exercise?.description}</pre>
+      </S.Sidebar>
+
       <S.Container onKeyDown={handleKeyPress} tabIndex="0">
         <S.Wrapper style={{ width: `calc(${mousePos.x}% - 10px)` }}>
           <S.Box type="editor">

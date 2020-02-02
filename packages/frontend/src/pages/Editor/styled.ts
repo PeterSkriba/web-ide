@@ -156,12 +156,44 @@ export const TestButton = styled.div`
   :hover { transform: scale(1.1); }
 `
 
-// sidebar
 export const Sidebar = styled.aside`
-  //height: 100vh;
+  display: flex;
+  flex-direction: column;
   height: 750px;
-  background: red;
-  width: 200px;
-  //margin-top: -80px;
-  //margin-bottom: -80px;
+  flex-shrink: 0;
+  background: ${colors.box};
+  box-shadow: 6px 6px 15px ${colors.shadow};
+  border-radius: 0 6px 6px 0;
+  position: relative;
+  width: ${p => p.isOpen ? '400px' : '0px'};
+  div {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    h2 {
+      margin-left: 15px;
+      font-weight: 500;
+      font-size: 18px;
+    }
+  }
+  pre {
+    overflow: hidden;
+    padding: 0 0 25px 35px;
+    font-family: inherit;
+  }
+`
+
+export const ToggleSidebar = styled.button`
+  ${common.flexCenterVH}
+  position: absolute;
+  width: 50px;
+  padding: 5px;
+  height: 50px;
+  border-radius: 50%;
+  right: -25px;
+  top: calc(50% - 20px);
+  background: ${colors.text};
+  color: ${colors.box};
+  transform: scale(${p => p.isOpen ? -1 : 1});
+  ${p => !p.isOpen && 'justify-content: flex-end;'}
 `

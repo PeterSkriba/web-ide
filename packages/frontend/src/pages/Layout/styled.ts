@@ -14,3 +14,16 @@ export const Content = styled.main`
   width: 100%;
   flex-grow: 1;
 `
+
+export const Footer = styled.footer`
+  ${common.flexCenterVH}
+  width: 100%;
+  font-size: 12px;
+  height: 80px;
+`
+
+export const Header = styled.header`
+  ${common.flexCenterVH}
+  width: 100%;
+  height: 80px;
+`
