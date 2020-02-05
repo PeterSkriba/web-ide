@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Fri Jan 31 2020 13:59:22 GMT+0100 (Central European Standard Time)
+# timestamp: Wed Feb 05 2020 22:00:11 GMT+0100 (Central European Standard Time)
 
 type AggregateCode {
   count: Int!
@@ -451,6 +451,7 @@ scalar DateTime
 type Exercise implements Node {
   id: ID!
   title: String!
+  slug: String!
   body: String
   description: String!
   stdin: [String!]!
@@ -472,6 +473,7 @@ type ExerciseConnection {
 input ExerciseCreateInput {
   id: ID
   title: String!
+  slug: String!
   body: String
   description: String!
   stdin: ExerciseCreatestdinInput
@@ -505,6 +507,8 @@ enum ExerciseOrderByInput {
   id_DESC
   title_ASC
   title_DESC
+  slug_ASC
+  slug_DESC
   body_ASC
   body_DESC
   description_ASC
@@ -518,6 +522,7 @@ enum ExerciseOrderByInput {
 type ExercisePreviousValues {
   id: ID!
   title: String!
+  slug: String!
   body: String
   description: String!
   stdin: [String!]!
@@ -559,6 +564,7 @@ input ExerciseSubscriptionWhereInput {
 
 input ExerciseUpdateDataInput {
   title: String
+  slug: String
   body: String
   description: String
   stdin: ExerciseUpdatestdinInput
@@ -567,6 +573,7 @@ input ExerciseUpdateDataInput {
 
 input ExerciseUpdateInput {
   title: String
+  slug: String
   body: String
   description: String
   stdin: ExerciseUpdatestdinInput
@@ -575,6 +582,7 @@ input ExerciseUpdateInput {
 
 input ExerciseUpdateManyMutationInput {
   title: String
+  slug: String
   body: String
   description: String
   stdin: ExerciseUpdatestdinInput
@@ -684,6 +692,46 @@ input ExerciseWhereInput {
 
   """All values not ending with the given string."""
   title_not_ends_with: String
+  slug: String
+
+  """All values that are not equal to given value."""
+  slug_not: String
+
+  """All values that are contained in given list."""
+  slug_in: [String!]
+
+  """All values that are not contained in given list."""
+  slug_not_in: [String!]
+
+  """All values less than the given value."""
+  slug_lt: String
+
+  """All values less than or equal the given value."""
+  slug_lte: String
+
+  """All values greater than the given value."""
+  slug_gt: String
+
+  """All values greater than or equal the given value."""
+  slug_gte: String
+
+  """All values containing the given string."""
+  slug_contains: String
+
+  """All values not containing the given string."""
+  slug_not_contains: String
+
+  """All values starting with the given string."""
+  slug_starts_with: String
+
+  """All values not starting with the given string."""
+  slug_not_starts_with: String
+
+  """All values ending with the given string."""
+  slug_ends_with: String
+
+  """All values not ending with the given string."""
+  slug_not_ends_with: String
   body: String
 
   """All values that are not equal to given value."""
@@ -813,6 +861,7 @@ input ExerciseWhereInput {
 input ExerciseWhereUniqueInput {
   id: ID
   title: String
+  slug: String
 }
 
 """

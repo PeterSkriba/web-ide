@@ -6,11 +6,11 @@ export default async (_, args, ctx, info) => {
     where: { email: args.email }
   })
 
-  if (!user) throw new Error('Invalid Login')
+  if (!user) throw new Error('Invalid Email')
 
   const passwordMatch = await bcrypt.compare(args.password, user.password)
 
-  if (!passwordMatch) throw new Error('Invalid Credentials')
+  if (!passwordMatch) throw new Error('Invalid Password')
 
   const token = jwt.sign(
     {

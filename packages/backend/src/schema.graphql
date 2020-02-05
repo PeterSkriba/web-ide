@@ -2,8 +2,10 @@
 
 type Query {
   user(email: String!): User
-  exercise(title: String!): Exercise
-  codeOwn(user_id: ID!, exercise_id: ID!): Code
+  exercise(slug: String!): Exercise
+  codeOwn(user_id: ID!, exercise_slug: String!): Code!
+  exercises: [Exercise]
+  me: User
 }
 
 type Mutation {

@@ -26,6 +26,7 @@ button {
   border: 0;
   outline: 0 !important;
   cursor: pointer;
+  background: transparent;
 }
 
 /* EDITOR */

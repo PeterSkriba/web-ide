@@ -5,7 +5,7 @@ export default async (_, args, context, info) => {
         id: args.user_id
       },
       exercise: {
-        id: args.exercise_id
+        slug: args.exercise_slug
       }
     }}, info)
   return codeOwn[0]

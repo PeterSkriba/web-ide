@@ -1,5 +1,5 @@
-import React from 'react'
-import { useQuery, useMutation } from '@apollo/react-hooks'
+import React, { useState, ChangeEvent } from 'react'
+import { useMutation } from '@apollo/react-hooks'
 
 import { LOGIN } from 'apollo/mutations'
 
@@ -7,24 +7,65 @@ import { LOGIN } from 'apollo/mutations'
 
 import * as S from './styled'
 
-// https://www.prisma.io/tutorials/authentication-in-apollo-server-ct21
+type Props = {
+  onLogin: () => void
+}
 
-const Auth = () => {
+type Form = {
+  email: string
+  password: string
+}
+
+const Auth = ({ onLogin }: Props) => {
   const [login] = useMutation(LOGIN)
+  const [form, setForm] = useState<Form>({
+    email: '',
+    password: ''
+  })
 
-  const handleLogin = () => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setForm({ ...form, [name]: value })
+  }
+
+  const handleLogin = (e) => {
+    e.preventDefault()
+
     login({
       variables: {
-        email: 'johndoe@gmail.com',
-        password: 'johndoe'
+        email: form.email,
+        password: form.password
       }
-    }).then(res => console.log(res))
+    }).then(res => {
+      const token = res.data.login.token
+
+      if (token) {
+        localStorage.setItem('token', token)
+        onLogin()
+      }
+    }).catch(err => console.log(err))
   }
 
   return (
     <>
-      <p>Auth</p>
-      <button onClick={handleLogin}>Login</button>
+      <h1>Auth</h1>
+      <form onSubmit={handleLogin}>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleInputChange}
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={handleInputChange}
+        />
+        <input type="submit" value="Login" />
+      </form>
     </>
   )
 }
