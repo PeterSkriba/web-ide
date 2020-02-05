@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { CodeRounded } from '@material-ui/icons';
 import LooksOneRoundedIcon from '@material-ui/icons/LooksOneRounded';
 import LooksTwoRoundedIcon from '@material-ui/icons/LooksTwoRounded';
@@ -69,6 +69,7 @@ const Editor = () => {
   const [output, setOutput] = useState<Output>({ output: '', log: '', exitCode: 0 })
   const [run_code] = useMutation(RUN_CODE)
   const [stdin, setStdin] = useState<string>('loading...')
+  const editorRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const codeBody = code_data?.codeOwn?.body
@@ -147,7 +148,6 @@ const Editor = () => {
     >
 
       <S.Sidebar isOpen={sidebarIsOpen}>
-        { /* dorobit */ }
         <S.ToggleSidebar
           onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
           isOpen={sidebarIsOpen}
@@ -160,10 +160,12 @@ const Editor = () => {
             <h2>{exercise_data?.exercise?.title}</h2>
           </div>
         </S.BoxHeader>
-        <pre>{exercise_data?.exercise?.description}</pre>
+        <S.SidebarBody>
+          <pre>{exercise_data?.exercise?.description}</pre>
+        </S.SidebarBody>
       </S.Sidebar>
 
-      <S.Container onKeyDown={handleKeyPress} tabIndex="0">
+      <S.Container ref={editorRef} onKeyDown={handleKeyPress} isOpenSidebar={sidebarIsOpen} tabIndex="0">
         <S.Wrapper style={{ width: `calc(${mousePos.x}% - 10px)` }}>
           <S.Box type="editor">
             <S.BoxHeader>

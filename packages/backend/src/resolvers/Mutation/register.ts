@@ -1,8 +1,10 @@
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 export default async (_, args, ctx, info) => {
   const salt = await bcrypt.genSalt(10)
   const hashedPassword = await bcrypt.hash(args.data.password, salt)
+
   const user = await ctx.prisma.mutation.createUser({
     data: {
       username: args.data.username,
@@ -11,5 +13,17 @@ export default async (_, args, ctx, info) => {
       email: args.data.email,
       password: hashedPassword
     }}, info)
-  return user
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+        email: user.email
+      },
+      "moj-akoze-sekret-kod",
+      {
+        expiresIn: '30d'
+      }
+    )
+
+  return { token, user }
 }

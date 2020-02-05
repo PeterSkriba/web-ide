@@ -8,7 +8,7 @@ const resolvers = {
   Mutation,
   Node: {
     __resolveType() {
-      return null;
+      return null
     }
   }
 }
@@ -16,13 +16,18 @@ const resolvers = {
 const server = new GraphQLServer({
   typeDefs: 'src/schema.graphql',
   resolvers,
-  context: req => ({
-    ...req,
-    prisma: new Prisma({
+  context: (req: any) => {
+    const prisma = new Prisma({
       typeDefs: 'src/generated/prisma.graphql',
       endpoint: 'http://localhost:4466'
     })
-  })
+
+    return {
+      req, //...req
+      prisma
+    }
+
+  }
 })
 
 server.start(() => console.log(`GraphQL server is running on http://localhost:4000`))

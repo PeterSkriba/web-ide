@@ -30,15 +30,19 @@ button {
 
 /* EDITOR */
 
+.monaco-editor, .overflow-guard, .margin-view-overlays, .view-lines, .overlayWidgets, .monaco-scrollable-element, .overflow-guard {
+  width: 100% !important;
+}
+
+.vertical {
+  right: 69px !important;
+}
+
 .monaco-editor, .margin, .monaco-editor-background {
   background-color: transparent !important;
 }
 
-.decorationsOverviewRuler {
-  display: none;
-}
-
-.minimap canvas {
+.decorationsOverviewRuler, .minimap canvas {
   display: none;
 }
 
@@ -55,11 +59,7 @@ button {
   color: #6a7086 !important;
 }
 
-.slider {
-  width: 8px !important;
-}
-
-.scrollbar {
+.vertical, .slider {
   width: 8px !important;
 }
 

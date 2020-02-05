@@ -3,17 +3,19 @@ import { colors } from 'styles/variables'
 import * as common from 'styles/common'
 
 export const Main = styled.div`
-  ${common.flexCenterVH}
+  display: flex;
   width: 100%;
+  @media only screen and (max-width: 1000px) {
+    flex-direction: column;
+  }
 `
 
 export const Container = styled.div`
-  transition: all 500ms linear;
   display: flex;
+  flex: 1;
   height: 750px;
-  width: 100%;
-  max-width: 1700px;
   padding: 0 8%;
+  ${p => p.isOpenSidebar && 'padding-left: 56px;'}
   @media only screen and (max-width: 1000px) {
     flex-direction: column;
     min-height: 750px;
@@ -94,7 +96,7 @@ export const Divider = styled.button`
     ? 'min-width: 20px; cursor: ew-resize;'
     : 'min-height: 20px; cursor: ns-resize;'
   }
-  ::before {
+  &:before {
     content: '';
     position: absolute;
     width: 10px;
@@ -147,44 +149,63 @@ export const CircleButton = styled.button`
   }
 `
 
-export const TestButton = styled.div`
-  cursor: pointer;
+export const TestButton = styled.button`
+  background: transparent;
   float: left;
   transition: all 100ms linear;
   ${p => p.isActive && 'margin-top: -5px'};
   color: ${p => p.isOk && colors.btnGreen || p.isFail && colors.btnRed};
-  :hover { transform: scale(1.1); }
+  &:hover { transform: scale(1.1); }
 `
 
 export const Sidebar = styled.aside`
   display: flex;
   flex-direction: column;
   height: 750px;
-  flex-shrink: 0;
   background: ${colors.box};
   box-shadow: 6px 6px 15px ${colors.shadow};
   border-radius: 0 6px 6px 0;
   position: relative;
-  width: ${p => p.isOpen ? '400px' : '0px'};
+  transition: width .5s cubic-bezier(0, 1, 0, 1);
+  width: ${p => p.isOpen ? '350px' : '0px'};
+  @media only screen and (max-width: 1300px) {
+    width: ${p => p.isOpen ? '250px' : '0px'};
+  }
+  @media only screen and (max-width: 1000px) {
+    width: 100% !important;
+    border-radius: 0;
+    margin-bottom: 20px;
+    height: auto;
+    max-height: 400px;
+  }
   div {
     overflow: hidden;
     display: flex;
     align-items: center;
     h2 {
-      margin-left: 15px;
+      margin-left: 8px;
       font-weight: 500;
       font-size: 18px;
     }
   }
+`
+
+export const SidebarBody = styled.div`
+  overflow: hidden;
+  padding-bottom: 25px;
   pre {
-    overflow: hidden;
-    padding: 0 0 25px 35px;
+    width: 100%;
+    height: 100%;
+    padding: 0 35px;
     font-family: inherit;
+    overflow-y: auto;
+    white-space: pre-wrap;
   }
 `
 
 export const ToggleSidebar = styled.button`
   ${common.flexCenterVH}
+  z-index: 100;
   position: absolute;
   width: 50px;
   padding: 5px;
@@ -196,4 +217,7 @@ export const ToggleSidebar = styled.button`
   color: ${colors.box};
   transform: scale(${p => p.isOpen ? -1 : 1});
   ${p => !p.isOpen && 'justify-content: flex-end;'}
+  @media only screen and (max-width: 1000px) {
+    display: none;
+  }
 `
