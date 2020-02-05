@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 export default gql`
-  query exercise($slug: String!) {
-    exercise(slug: $slug) {
+  query exercises {
+    exercises {
       id
       title
       body

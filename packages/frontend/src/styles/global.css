@@ -26,45 +26,24 @@ button {
   border: 0;
   outline: 0 !important;
   cursor: pointer;
+  background: transparent;
 }
-
-/* LAYOUT */
-
-footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-  flex-shrink: 1;
-  width: 100%;
-  font-size: 12px;
-  /*max-height: 100px;*/
-  min-height: 80px;
-  /* maybe padding */
-}
-
-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-  flex-shrink: 1;
-  width: 100%;
-  min-height: 80px;
-}
-
 
 /* EDITOR */
+
+.monaco-editor, .overflow-guard, .margin-view-overlays, .view-lines, .overlayWidgets, .monaco-scrollable-element, .overflow-guard {
+  width: 100% !important;
+}
+
+.vertical {
+  right: 69px !important;
+}
 
 .monaco-editor, .margin, .monaco-editor-background {
   background-color: transparent !important;
 }
 
-.decorationsOverviewRuler {
-  display: none;
-}
-
-.minimap canvas {
+.decorationsOverviewRuler, .minimap canvas {
   display: none;
 }
 
@@ -81,11 +60,7 @@ header {
   color: #6a7086 !important;
 }
 
-.slider {
-  width: 8px !important;
-}
-
-.scrollbar {
+.vertical, .slider {
   width: 8px !important;
 }
 

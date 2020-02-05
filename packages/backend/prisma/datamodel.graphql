@@ -23,6 +23,7 @@ type Code {
 type Exercise {
   id: ID! @id
   title: String! @unique
+  slug: String! @unique
   body: String
   description: String!
   stdin: [String]!

@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 export default gql`
-  query user($email: String!) {
-    user(email: $email) {
+  query me {
+    me {
       id
       username
       first_name

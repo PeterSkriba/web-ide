@@ -2,17 +2,27 @@
 
 type Query {
   user(email: String!): User
-  exercise(title: String!): Exercise
-  codeOwn(user_id: ID!, exercise_id: ID!): Code
+  exercise(slug: String!): Exercise
+  codeOwn(user_id: ID!, exercise_slug: String!): Code!
+  exercises: [Exercise]
+  me: User
 }
 
 type Mutation {
+  register(data: createUserInput!): AuthResponse!
+  login(email: String!, password: String!): AuthResponse!
+
   createUser(data: createUserInput!): User
   createCode(data: createCodeInput!): Code
   createExercise(data: createExerciseInput!): Exercise
 
   updateCode(data: updateCodeDataInput!, where: updateCodeWhereInput!): Code
   runCode(code_id: ID!, test_no: Int!, test_body: String!): runCodeOutput
+}
+
+type AuthResponse {
+  token: String
+  user: User
 }
 
 type runCodeOutput {
@@ -30,11 +40,11 @@ input updateCodeWhereInput {
 }
 
 input createUserInput {
-  username: String
-  first_name: String
-  last_name: String
-  email: String
-  password: String
+  username: String!
+  first_name: String!
+  last_name: String!
+  email: String!
+  password: String!
 }
 
 input createCodeInput {
