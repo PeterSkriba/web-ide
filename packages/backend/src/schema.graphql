@@ -1,9 +1,8 @@
 # import * from 'generated/prisma.graphql'
 
 type Query {
-  user(email: String!): User
-  exercise(slug: String!): Exercise
   codeOwn(user_id: ID!, exercise_slug: String!): Code!
+
   exercises: [Exercise]
   me: User
 }
@@ -12,12 +11,16 @@ type Mutation {
   register(data: createUserInput!): AuthResponse!
   login(email: String!, password: String!): AuthResponse!
 
-  createUser(data: createUserInput!): User
-  createCode(data: createCodeInput!): Code
   createExercise(data: createExerciseInput!): Exercise
 
   updateCode(data: updateCodeDataInput!, where: updateCodeWhereInput!): Code
-  runCode(code_id: ID!, test_no: Int!, test_body: String!): runCodeOutput
+  runCode(where: runCodeWhereInput!): runCodeOutput
+}
+
+input runCodeWhereInput {
+  code_id: ID
+  test_no: Int
+  test_body: String
 }
 
 type AuthResponse {
@@ -45,11 +48,6 @@ input createUserInput {
   last_name: String!
   email: String!
   password: String!
-}
-
-input createCodeInput {
-  body: String
-  tests: [Int]
 }
 
 input createExerciseInput {

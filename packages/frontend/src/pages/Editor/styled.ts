@@ -152,6 +152,7 @@ export const CircleButton = styled.button`
 export const TestButton = styled.button`
   background: transparent;
   float: left;
+  color: ${colors.text};
   transition: all 100ms linear;
   ${p => p.isActive && 'margin-top: -5px'};
   color: ${p => p.isOk && colors.btnGreen || p.isFail && colors.btnRed};
@@ -192,7 +193,7 @@ export const Sidebar = styled.aside`
 
 export const SidebarBody = styled.div`
   overflow: hidden;
-  padding-bottom: 25px;
+  margin-bottom: 25px;
   pre {
     width: 100%;
     height: 100%;
@@ -200,6 +201,9 @@ export const SidebarBody = styled.div`
     font-family: inherit;
     overflow-y: auto;
     white-space: pre-wrap;
+    @media only screen and (max-width: 1000px) {
+      max-height: 300px;
+    }
   }
 `
 
@@ -219,5 +223,21 @@ export const ToggleSidebar = styled.button`
   ${p => !p.isOpen && 'justify-content: flex-end;'}
   @media only screen and (max-width: 1000px) {
     display: none;
+  }
+`
+
+export const CodeTitle = styled.div`
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    left: -15px;
+    top: calc(50% - 5px);
+    display: none;
+    ${p => p.isNotSaved && 'display: block;'}
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    background: ${colors.text};
   }
 `

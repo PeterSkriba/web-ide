@@ -5,6 +5,7 @@ export default gql`
     codeOwn(user_id: $user_id, exercise_slug: $exercise_slug) {
       id
       body
+      tests
       exercise {
         id
         title
@@ -13,7 +14,6 @@ export default gql`
         stdin
         stdout
       }
-      tests
     }
   }
 `

@@ -17,7 +17,7 @@ export default async (_, args, ctx, info) => {
       id: user.id,
       email: user.email
     },
-    "moj-akoze-sekret-kod",
+    process.env.SECRET,
     {
       expiresIn: '30d'
     }

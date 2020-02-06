@@ -19,7 +19,7 @@ const getToken = (token: string) => token.replace('Bearer ', '')
 const getUser = (token: string) => {
   try {
     return (token)
-      ? jwt.verify(token, 'moj-akoze-sekret-kod')
+      ? jwt.verify(token, process.env.SECRET)
       : null
   } catch (err) {
     throw new Error('Token Error')
@@ -32,7 +32,7 @@ const server = new GraphQLServer({
   context: (req: any) => {
     const prisma = new Prisma({
       typeDefs: 'src/generated/prisma.graphql',
-      endpoint: 'http://localhost:4466'
+      endpoint: process.env.PRISMA_ENDPOINT
     })
 
     const tokenWithBearer = req.request.headers.authorization || ''
@@ -47,4 +47,4 @@ const server = new GraphQLServer({
   }
 })
 
-server.start(() => console.log(`GraphQL server is running on http://localhost:4000`))
+server.start(() => console.log(`GraphQL server is running on ${process.env.GRAPHQL_ENDPOINT}`))
