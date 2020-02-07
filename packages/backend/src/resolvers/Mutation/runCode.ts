@@ -29,7 +29,12 @@ export default async (_, args, ctx, info) => {
     (err) => { err && console.log(err) }
   )
 
-  code.tests[args.where.test_no] = (res.stdout.replace(/\s/g, '') == code.exercise.stdout[args.where.test_no].replace(/\s/g, '')) ? 1 : 2
+  code.tests[args.where.test_no] =
+    (
+      res.stdout.replace(/\s/g, '') ==
+      code.exercise.stdout[args.where.test_no].replace(/\s/g, '')
+    ) ? 1 : 2
+
   await ctx.prisma.mutation.updateCode({
     data: { tests: {set: code.tests} },
     where: { id: args.where.code_id }
@@ -38,6 +43,6 @@ export default async (_, args, ctx, info) => {
   return {
     output: res.stdout,
     log: res.stderr ? getOut(res.stderr) : null,
-    exitCode: res.exitCode // delete
+    exitCode: res.exitCode
   }
 }

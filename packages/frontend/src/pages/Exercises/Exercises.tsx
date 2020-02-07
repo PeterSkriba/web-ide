@@ -19,7 +19,7 @@ const Exercises = ({ me }: Props) => {
       <div>
         {!loading && data?.exercises.map(
           (exercise, idx) => (
-            <Link to={`/editor/${exercise.slug}`} key={`exercise-${idx}`}>
+            <Link to={`/${exercise.slug}`} key={`exercise-${idx}`}>
               <div>
                 { exercise.title }
               </div>

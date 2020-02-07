@@ -19,8 +19,8 @@ type Form = {
 const Auth = ({ onLogin }: Props) => {
   const [login] = useMutation(LOGIN)
   const [form, setForm] = useState<Form>({
-    email: '',
-    password: ''
+    email: 'johndoe@gmail.com',
+    password: 'johndoe'
   })
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +40,7 @@ const Auth = ({ onLogin }: Props) => {
       const token = res.data.login.token
 
       if (token) {
-        localStorage.setItem('token', token)
+        localStorage.setItem('editor_auth-token', token)
         onLogin()
       }
     }).catch(err => console.log(err))

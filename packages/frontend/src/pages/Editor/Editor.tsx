@@ -109,10 +109,15 @@ const Editor = ({ me, match }: Props) => {
             log: res.data.runCode.log,
             exitCode: res.data.runCode.exitCode
           })
-          refetch()
+          refetch().then((res) => {
+            window.scrollTo(0, document.body.scrollHeight)
+            setSnackbarState({
+              message: `Test ${testActive + 1}: ${(res?.data?.codeOwn?.tests[testActive] == TestStatus.OK) ? 'OK' : 'FAIL'}`,
+              isOpen: true
+            })
+          })
         })
       )
-    // link to out
     setSnackbarState({ message: 'Running', isOpen: true })
   }
 
@@ -249,7 +254,7 @@ const Editor = ({ me, match }: Props) => {
 
           <S.Divider isHorizontal onMouseDown={() => setVerDragging(true)} />
 
-          <S.Box type="inout" style={{ height: `calc(${100 - mousePos.y}% - 10px)` }} >
+          <S.Box id="scrollToOutput" type="inout" style={{ height: `calc(${100 - mousePos.y}% - 10px)` }} >
             <S.BoxHeader>Stdout</S.BoxHeader>
 
             <Monaco
