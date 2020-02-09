@@ -4,18 +4,18 @@ import { useQuery } from '@apollo/react-hooks'
 
 import { EXERCISES } from 'apollo/queries'
 
+import { useAuth } from 'hooks'
+
 import * as S from './styled'
 
-type Props = {
-  me: any
-}
+const Exercises = () => {
+  const [meData, meLoading] = useAuth()
 
-const Exercises = ({ me }: Props) => {
   const { loading, data } = useQuery(EXERCISES)
 
   return (
     <>
-      <h1>Exercises</h1>
+      <h1>Exercises {meData?.me?.email} </h1>
       <div>
         {!loading && data?.exercises.map(
           (exercise, idx) => (

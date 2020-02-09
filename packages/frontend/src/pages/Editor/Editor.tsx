@@ -9,6 +9,8 @@ import Looks3RoundedIcon from '@material-ui/icons/Looks3Rounded'
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn'
 import ArrowForwardIosRoundedIcon from '@material-ui/icons/ArrowForwardIosRounded'
 
+import { useAuth } from 'hooks'
+
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { CODE } from 'apollo/queries'
 import { UPDATE_CODE, RUN_CODE } from 'apollo/mutations'
@@ -34,7 +36,6 @@ type Output = {
 enum TestStatus { NONE, OK, FAIL }
 
 type Props = {
-  me: any
   match: Match
 }
 
@@ -43,7 +44,9 @@ const KeyCodes = {
   R: 82
 }
 
-const Editor = ({ me, match }: Props) => {
+const Editor = ({ match }: Props) => {
+  const [meData, meLoading] = useAuth()
+
   const [horDragging, setHorDragging] = useState<boolean>(false)
   const [verDragging, setVerDragging] = useState<boolean>(false)
   const [mousePos, setMousePos] = useState<MousePos>({ x: 70, y: 50 })
@@ -55,8 +58,9 @@ const Editor = ({ me, match }: Props) => {
   const [testActive, setTestActive] = useState<number>(0)
 
   const { loading, data, refetch } = useQuery(CODE, {
+    skip: meLoading,
     variables: {
-      user_id: me?.me?.id,
+      user_id: meData?.me?.id,
       exercise_slug: match.params.exercise
     }
   })
@@ -66,17 +70,19 @@ const Editor = ({ me, match }: Props) => {
 
   const [code, setCode] = useState<string>('loading...')
   const [stdin, setStdin] = useState<string>('loading...')
+  const [title, setTitle] = useState<string>('loading...')
   const [output, setOutput] = useState<Output>({ output: '', log: '', exitCode: 0 })
 
   useEffect(() => {
     const codeBody = data?.codeOwn?.body
-    const exerciseBody = data?.codeOwn?.exercise?.body
     const stdinBody = data?.codeOwn?.exercise?.stdin[testActive]
+    const exerciseBody = data?.codeOwn?.exercise?.body
+    const exerciseTitle = data?.codeOwn?.exercise?.title
 
     if (codeBody) setCode(codeBody)
-    else if (exerciseBody)
-      setCode(exerciseBody.replace(/\\n/g, '\n').replace(/\\t/g, '\t'))
+    else if (exerciseBody) setCode(exerciseBody.replace(/\\n/g, '\n').replace(/\\t/g, '\t'))
     if (stdinBody) setStdin(stdinBody)
+    if (exerciseTitle) setTitle(getTitle(exerciseTitle))
 
     setLogIsOpen(!!output.log)
   }, [data, output.log, testActive])
@@ -145,7 +151,7 @@ const Editor = ({ me, match }: Props) => {
     }
   }
 
-  const getTitle = (str: String) : String => (
+  const getTitle = (str: string): string => (
     str.replace(/ /g, '-').toLowerCase().replace(/[^a-z0-9]/gi, '').concat('.c')
   )
 
@@ -182,9 +188,7 @@ const Editor = ({ me, match }: Props) => {
             <S.BoxHeader>
               <CodeRounded fontSize="small" />
 
-              <S.CodeTitle isNotSaved={isNotSaved()}>
-                {!loading && getTitle(data?.codeOwn?.exercise?.title)}
-              </S.CodeTitle>
+              <S.CodeTitle isNotSaved={isNotSaved()}>{title}</S.CodeTitle>
 
               <div>
                 <S.CircleButton onClick={save} color="orange">

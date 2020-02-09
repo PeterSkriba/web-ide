@@ -1,19 +1,22 @@
 import React from 'react'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
+import { useAuth } from 'hooks'
+
 import * as S from './styled'
 
 type Props = {
   children: React.ReactNode[] | React.ReactNode | string
   logout: () => void
-  isLogged: boolean
 }
 
-const Layout = ({ children, logout, isLogged }: Props) => {
+const Layout = ({ children, logout }: Props) => {
+  const [meData, meLoading] = useAuth(false)
+
   return (
     <S.Main>
       <S.Header>
-        {isLogged &&
+        {!!meData?.me &&
           <button onClick={logout}>
             <ExitToAppIcon fontSize="small" />
           </button>
