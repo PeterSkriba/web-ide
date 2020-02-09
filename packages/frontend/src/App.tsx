@@ -24,22 +24,14 @@ const App = () => {
               <Auth onLogin={() => history.push('/')} {...props} />
             )}
           />
-          <Route
-            path="/"
-            exact
-            render={props => (
-              <Exercises {...props} />
-            )}
-          />
+          <Route path="/" exact render={props => <Exercises {...props} />} />
           <Route
             path="/:exercise"
             exact
-            render={props => (
-              <Editor {...props} />
-            )}
+            render={props => <Editor {...props} />}
           />
+          <Redirect from="*" to="/" />
         </Switch>
-        <Redirect from="*" to="/" />
       </Layout>
     </Router>
   )
