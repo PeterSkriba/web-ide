@@ -12,14 +12,17 @@ export default async (_, args, ctx, info) => {
       last_name: args.data.last_name,
       email: args.data.email,
       password: hashedPassword
-    }}, info)
+    }
+  })
 
-    const token = jwt.sign(
+  const token =
+    user &&
+    jwt.sign(
       {
         id: user.id,
         email: user.email
       },
-      "moj-akoze-sekret-kod",
+      process.env.SECRET,
       {
         expiresIn: '30d'
       }
