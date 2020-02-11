@@ -31,7 +31,13 @@ button {
 
 /* EDITOR */
 
-.monaco-editor, .overflow-guard, .margin-view-overlays, .view-lines, .overlayWidgets, .monaco-scrollable-element, .overflow-guard {
+.monaco-editor,
+.overflow-guard,
+.margin-view-overlays,
+.view-lines,
+.overlayWidgets,
+.monaco-scrollable-element,
+.overflow-guard {
   width: 100% !important;
 }
 
@@ -39,11 +45,14 @@ button {
   right: 69px !important;
 }
 
-.monaco-editor, .margin, .monaco-editor-background {
+.monaco-editor,
+.margin,
+.monaco-editor-background {
   background-color: transparent !important;
 }
 
-.decorationsOverviewRuler, .minimap canvas {
+.decorationsOverviewRuler,
+.minimap canvas {
   display: none;
 }
 
@@ -60,15 +69,17 @@ button {
   color: #6a7086 !important;
 }
 
-.vertical, .slider {
+.vertical,
+.slider {
   width: 8px !important;
 }
 
 .slider {
-  opacity: .3;
+  opacity: 0.3;
 }
 
-.overflow-guard, .monaco-editor {
+.overflow-guard,
+.monaco-editor {
   height: 100% !important;
 }
 
@@ -91,10 +102,10 @@ button {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(121, 121, 121, .13);
+  background: rgba(121, 121, 121, 0.13);
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(121, 121, 121, .18);
+  background: rgba(121, 121, 121, 0.18);
 }

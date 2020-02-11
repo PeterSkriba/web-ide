@@ -28,7 +28,7 @@ const Auth = ({ onLogin }: Props) => {
     setForm({ ...form, [name]: value })
   }
 
-  const handleLogin = (e) => {
+  const handleLogin = e => {
     e.preventDefault()
 
     login({
@@ -36,14 +36,16 @@ const Auth = ({ onLogin }: Props) => {
         email: form.email,
         password: form.password
       }
-    }).then(res => {
-      const token = res.data.login.token
+    })
+      .then(res => {
+        const token = res.data.login.token
 
-      if (token) {
-        localStorage.setItem('editor_auth-token', token)
-        onLogin()
-      }
-    }).catch(err => console.log(err))
+        if (token) {
+          localStorage.setItem('editor_auth-token', token)
+          onLogin()
+        }
+      })
+      .catch(err => console.log(err))
   }
 
   return (

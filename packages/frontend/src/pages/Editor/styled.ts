@@ -50,7 +50,7 @@ const log = css`
     white-space: pre-wrap;
   }
   transition-property: max-height, margin-top;
-  transition: ${p => p.isOpen ? '1s' : '.5s'} cubic-bezier(0, 1, 0, 1);
+  transition: ${p => (p.isOpen ? '1s' : '.5s')} cubic-bezier(0, 1, 0, 1);
   ${p => !p.isOpen && hide};
 `
 
@@ -73,10 +73,9 @@ export const Box = styled.div`
   box-shadow: 6px 6px 15px ${colors.shadow};
   border-radius: 6px;
   ${p =>
-    p.type == 'log' && log ||
-    p.type == 'editor' && editor ||
-    p.type == 'inout' && inout
-  }
+    (p.type == 'log' && log) ||
+    (p.type == 'editor' && editor) ||
+    (p.type == 'inout' && inout)}
 `
 
 export const BoxHeader = styled.div`
@@ -92,21 +91,19 @@ export const Divider = styled.button`
   ${common.flexCenterVH}
   background: transparent;
   z-index: 100;
-  ${p => p.isVertical
-    ? 'min-width: 20px; cursor: ew-resize;'
-    : 'min-height: 20px; cursor: ns-resize;'
-  }
+  ${p =>
+    p.isVertical
+      ? 'min-width: 20px; cursor: ew-resize;'
+      : 'min-height: 20px; cursor: ns-resize;'}
   &:before {
     content: '';
     position: absolute;
     width: 10px;
     height: 20px;
     background: ${colors.text};
-    opacity: .2;
-    ${p => p.isVertical
-      ? 'width: 2px; height: 50px;'
-      : 'height: 2px; width: 50px;'
-    }
+    opacity: 0.2;
+    ${p =>
+      p.isVertical ? 'width: 2px; height: 50px;' : 'height: 2px; width: 50px;'}
   }
   @media only screen and (max-width: 1000px) {
     display: none;
@@ -125,9 +122,8 @@ export const Tooltip = styled.span`
   top: -30px;
   left: ${p => p.left};
   z-index: 100;
-  opacity: .5;
+  opacity: 0.5;
 `
-
 
 export const CircleButton = styled.button`
   width: 14px;
@@ -140,13 +136,15 @@ export const CircleButton = styled.button`
     visibility: visible;
   }
   background: ${p => {
-    switch(p.color) {
-      case 'red': return colors.btnRed;
-      case 'green': return colors.btnGreen;
-      case 'orange': return colors.btnOrange;
-      }
+    switch (p.color) {
+      case 'red':
+        return colors.btnRed
+      case 'green':
+        return colors.btnGreen
+      case 'orange':
+        return colors.btnOrange
     }
-  }
+  }};
 `
 
 export const TestButton = styled.button`
@@ -155,8 +153,10 @@ export const TestButton = styled.button`
   color: ${colors.text};
   transition: all 100ms linear;
   ${p => p.isActive && 'margin-top: -5px'};
-  color: ${p => p.isOk && colors.btnGreen || p.isFail && colors.btnRed};
-  &:hover { transform: scale(1.1); }
+  color: ${p => (p.isOk && colors.btnGreen) || (p.isFail && colors.btnRed)};
+  &:hover {
+    transform: scale(1.1);
+  }
 `
 
 export const Sidebar = styled.aside`
@@ -167,10 +167,10 @@ export const Sidebar = styled.aside`
   box-shadow: 6px 6px 15px ${colors.shadow};
   border-radius: 0 6px 6px 0;
   position: relative;
-  transition: width .5s cubic-bezier(0, 1, 0, 1);
-  width: ${p => p.isOpen ? '350px' : '0px'};
+  transition: width 0.5s cubic-bezier(0, 1, 0, 1);
+  width: ${p => (p.isOpen ? '350px' : '0px')};
   @media only screen and (max-width: 1300px) {
-    width: ${p => p.isOpen ? '250px' : '0px'};
+    width: ${p => (p.isOpen ? '250px' : '0px')};
   }
   @media only screen and (max-width: 1000px) {
     width: 100% !important;
@@ -219,7 +219,7 @@ export const ToggleSidebar = styled.button`
   top: calc(50% - 20px);
   background: ${colors.text};
   color: ${colors.box};
-  transform: scale(${p => p.isOpen ? -1 : 1});
+  transform: scale(${p => (p.isOpen ? -1 : 1)});
   ${p => !p.isOpen && 'justify-content: flex-end;'}
   @media only screen and (max-width: 1000px) {
     display: none;

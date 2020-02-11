@@ -2,7 +2,7 @@ const { GraphQLServer } = require('graphql-yoga')
 const { Prisma } = require('prisma-binding')
 const jwt = require('jsonwebtoken')
 
-import { Query, Mutation, Subscription } from '@/resolvers'
+import { Query, Mutation, Subscription } from '@/resolvers'
 
 const resolvers = {
   Query,
@@ -18,9 +18,7 @@ const getToken = (token: string) => token.replace('Bearer ', '')
 
 const getUser = (token: string) => {
   try {
-    return (token)
-      ? jwt.verify(token, process.env.SECRET)
-      : null
+    return token ? jwt.verify(token, process.env.SECRET) : null
   } catch (err) {
     throw new Error('Token Error')
   }
@@ -43,8 +41,9 @@ const server = new GraphQLServer({
       user,
       prisma
     }
-
   }
 })
 
-server.start(() => console.log(`GraphQL server is running on ${process.env.GRAPHQL_ENDPOINT}`))
+server.start(() =>
+  console.log(`GraphQL server is running on ${process.env.GRAPHQL_ENDPOINT}`)
+)

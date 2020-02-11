@@ -1,4 +1,4 @@
-const {c, cpp, node, python, java} = require('compile-run')
+const { c, cpp, node, python, java } = require('compile-run')
 
 const getOut = (str: string): string => {
   const split = str.split(': ')
@@ -25,20 +25,25 @@ export default async (_, args, ctx, info) => {
 
   const res = await cpp.runSource(
     code.body,
-    { stdin: args.where.test_body},
-    (err) => { err && console.log(err) }
+    { stdin: args.where.test_body },
+    err => {
+      err && console.log(err)
+    }
   )
 
   code.tests[args.where.test_no] =
-    (
-      res.stdout.replace(/\s/g, '') ==
-      code.exercise.stdout[args.where.test_no].replace(/\s/g, '')
-    ) ? 1 : 2
+    res.stdout.replace(/\s/g, '') ==
+    code.exercise.stdout[args.where.test_no].replace(/\s/g, '')
+      ? 1
+      : 2
 
-  await ctx.prisma.mutation.updateCode({
-    data: { tests: {set: code.tests} },
-    where: { id: args.where.code_id }
-  }, info)
+  await ctx.prisma.mutation.updateCode(
+    {
+      data: { tests: { set: code.tests } },
+      where: { id: args.where.code_id }
+    },
+    info
+  )
 
   return {
     output: res.stdout,

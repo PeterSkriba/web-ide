@@ -17,15 +17,12 @@ const Exercises = () => {
     <>
       <h1>Exercises {meData?.me?.email} </h1>
       <div>
-        {!loading && data?.exercises.map(
-          (exercise, idx) => (
+        {!loading &&
+          data?.exercises.map((exercise, idx) => (
             <Link to={`/${exercise.slug}`} key={`exercise-${idx}`}>
-              <div>
-                { exercise.title }
-              </div>
+              <div>{exercise.title}</div>
             </Link>
-          )
-        )}
+          ))}
       </div>
     </>
   )

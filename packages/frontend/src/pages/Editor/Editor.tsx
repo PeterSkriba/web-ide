@@ -11,6 +11,9 @@ import ArrowForwardIosRoundedIcon from '@material-ui/icons/ArrowForwardIosRounde
 
 import { useAuth } from 'hooks'
 
+import { useDispatch } from 'react-redux'
+import { setLoadingAction } from 'actions'
+
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { CODE } from 'apollo/queries'
 import { UPDATE_CODE, RUN_CODE } from 'apollo/mutations'
@@ -33,7 +36,11 @@ type Output = {
   exitCode: number
 }
 
-enum TestStatus { NONE, OK, FAIL }
+enum TestStatus {
+  NONE,
+  OK,
+  FAIL
+}
 
 type Props = {
   match: Match
@@ -45,13 +52,18 @@ const KeyCodes = {
 }
 
 const Editor = ({ match }: Props) => {
+  const dispatch = useDispatch()
+
   const [meData, meLoading] = useAuth()
 
   const [horDragging, setHorDragging] = useState<boolean>(false)
   const [verDragging, setVerDragging] = useState<boolean>(false)
   const [mousePos, setMousePos] = useState<MousePos>({ x: 70, y: 50 })
 
-  const [snackbarState, setSnackbarState] = useState<SnackbarState>({ message: 'loading...', isOpen: false })
+  const [snackbarState, setSnackbarState] = useState<SnackbarState>({
+    message: 'loading...',
+    isOpen: false
+  })
 
   const [logIsOpen, setLogIsOpen] = useState<boolean>(false)
   const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(false)
@@ -71,7 +83,11 @@ const Editor = ({ match }: Props) => {
   const [code, setCode] = useState<string>('loading...')
   const [stdin, setStdin] = useState<string>('loading...')
   const [title, setTitle] = useState<string>('loading...')
-  const [output, setOutput] = useState<Output>({ output: '', log: '', exitCode: 0 })
+  const [output, setOutput] = useState<Output>({
+    output: '',
+    log: '',
+    exitCode: 0
+  })
 
   useEffect(() => {
     const codeBody = data?.codeOwn?.body
@@ -80,45 +96,58 @@ const Editor = ({ match }: Props) => {
     const exerciseTitle = data?.codeOwn?.exercise?.title
 
     if (codeBody) setCode(codeBody)
-    else if (exerciseBody) setCode(exerciseBody.replace(/\\n/g, '\n').replace(/\\t/g, '\t'))
+    else if (exerciseBody)
+      setCode(exerciseBody.replace(/\\n/g, '\n').replace(/\\t/g, '\t'))
     if (stdinBody) setStdin(stdinBody)
     if (exerciseTitle) setTitle(getTitle(exerciseTitle))
 
     setLogIsOpen(!!output.log)
+
+    dispatch(setLoadingAction({ visible: !data?.codeOwn })) // ?
   }, [data, output.log, testActive])
 
   const save = () => {
     if (!loading)
-      update({variables: {
-        where: { id: data?.codeOwn?.id },
-        data: { body: code }
-      }})
+      update({
+        variables: {
+          where: { id: data?.codeOwn?.id },
+          data: { body: code }
+        }
+      })
     refetch()
     setSnackbarState({ message: 'Successfully saved', isOpen: true })
   }
 
   const saveAndRun = () => {
     if (!loading)
-      update({variables: {
-        where: { id: data?.codeOwn?.id },
-        data: { body: code }
-      }}).then(() =>
-        run({variables: {
-          where: {
-            code_id: data?.codeOwn?.id,
-            test_no: testActive,
-            test_body: stdin
+      update({
+        variables: {
+          where: { id: data?.codeOwn?.id },
+          data: { body: code }
+        }
+      }).then(() =>
+        run({
+          variables: {
+            where: {
+              code_id: data?.codeOwn?.id,
+              test_no: testActive,
+              test_body: stdin
+            }
           }
-        }}).then(res => {
+        }).then(res => {
           setOutput({
             output: res.data.runCode.output,
             log: res.data.runCode.log,
             exitCode: res.data.runCode.exitCode
           })
-          refetch().then((res) => {
+          refetch().then(res => {
             window.scrollTo(0, document.body.scrollHeight)
             setSnackbarState({
-              message: `Test ${testActive + 1}: ${(res?.data?.codeOwn?.tests[testActive] == TestStatus.OK) ? 'OK' : 'FAIL'}`,
+              message: `Test ${testActive + 1}: ${
+                res?.data?.codeOwn?.tests[testActive] == TestStatus.OK
+                  ? 'OK'
+                  : 'FAIL'
+              }`,
               isOpen: true
             })
           })
@@ -151,17 +180,18 @@ const Editor = ({ match }: Props) => {
     }
   }
 
-  const getTitle = (str: string): string => (
-    str.replace(/ /g, '-').toLowerCase().replace(/[^a-z0-9]/gi, '').concat('.c')
-  )
+  const getTitle = (str: string): string =>
+    str
+      .replace(/ /g, '-')
+      .toLowerCase()
+      .replace(/[^a-z0-9]/gi, '')
+      .concat('.c')
 
-  const isNotSaved = (): boolean => code != data?.codeOwn?.body && code != data?.codeOwn?.exercise?.body
+  const isNotSaved = (): boolean =>
+    code != data?.codeOwn?.body && code != data?.codeOwn?.exercise?.body
 
   return (
-    <S.Main
-      onMouseUp={handleStopDragging}
-      onMouseMove={handleDragging}
-    >
+    <S.Main onMouseUp={handleStopDragging} onMouseMove={handleDragging}>
       <S.Sidebar isOpen={sidebarIsOpen}>
         <S.ToggleSidebar
           onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
@@ -182,7 +212,11 @@ const Editor = ({ match }: Props) => {
         </S.SidebarBody>
       </S.Sidebar>
 
-      <S.Container onKeyDown={handleKeyPress} isOpenSidebar={sidebarIsOpen} tabIndex="0">
+      <S.Container
+        onKeyDown={handleKeyPress}
+        isOpenSidebar={sidebarIsOpen}
+        tabIndex="0"
+      >
         <S.Wrapper style={{ width: `calc(${mousePos.x}% - 10px)` }}>
           <S.Box type="editor">
             <S.BoxHeader>
@@ -206,7 +240,6 @@ const Editor = ({ match }: Props) => {
           <S.Box type="log" isOpen={logIsOpen}>
             <S.BoxHeader>
               Compile log
-
               <S.CircleButton onClick={() => setLogIsOpen(false)} color="red">
                 <S.Tooltip left="-40px">Click to close</S.Tooltip>
               </S.CircleButton>
@@ -219,10 +252,9 @@ const Editor = ({ match }: Props) => {
         <S.Divider isVertical onMouseDown={() => setHorDragging(true)} />
 
         <S.Wrapper style={{ width: `calc(${100 - mousePos.x}% - 10px)` }}>
-          <S.Box type="inout" style={{ height: `calc(${mousePos.y}% - 10px)` }} >
+          <S.Box type="inout" style={{ height: `calc(${mousePos.y}% - 10px)` }}>
             <S.BoxHeader>
               Stdin
-
               <div>
                 <S.TestButton
                   onClick={() => setTestActive(0)}
@@ -253,17 +285,24 @@ const Editor = ({ match }: Props) => {
               </div>
             </S.BoxHeader>
 
-            <Monaco code={stdin.replace(/\\n/g, '\n').replace(/\\t/g, '\t')} setCode={setStdin} />
+            <Monaco
+              code={stdin.replace(/\\n/g, '\n').replace(/\\t/g, '\t')}
+              setCode={setStdin}
+            />
           </S.Box>
 
           <S.Divider isHorizontal onMouseDown={() => setVerDragging(true)} />
 
-          <S.Box id="scrollToOutput" type="inout" style={{ height: `calc(${100 - mousePos.y}% - 10px)` }} >
+          <S.Box
+            id="scrollToOutput"
+            type="inout"
+            style={{ height: `calc(${100 - mousePos.y}% - 10px)` }}
+          >
             <S.BoxHeader>Stdout</S.BoxHeader>
 
             <Monaco
               code={
-                (output.exitCode && !output.output)
+                output.exitCode && !output.output
                   ? '> exit code: ' + output.exitCode
                   : output.output
               }
