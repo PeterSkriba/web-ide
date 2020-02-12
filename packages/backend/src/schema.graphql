@@ -1,59 +1,60 @@
 # import * from 'generated/prisma.graphql'
 
 type Query {
-	codeOwn(user_id: ID!, exercise_slug: String!): Code!
+  codeOwn(user_id: ID!, exercise_slug: String!): Code!
+  existUser(email: String!): Boolean!
 
-	exercises: [Exercise]
-	me: User
+  exercises: [Exercise]
+  me: User
 }
 
 type Mutation {
-	register(data: createUserInput!): AuthResponse!
-	login(email: String!, password: String!): AuthResponse!
+  register(data: createUserInput!): AuthResponse!
+  login(email: String!, password: String!): AuthResponse!
 
-	createExercise(data: createExerciseInput!): Exercise
+  createExercise(data: createExerciseInput!): Exercise
 
-	updateCode(data: updateCodeDataInput!, where: updateCodeWhereInput!): Code
-	runCode(where: runCodeWhereInput!): runCodeOutput
+  updateCode(data: updateCodeDataInput!, where: updateCodeWhereInput!): Code
+  runCode(where: runCodeWhereInput!): runCodeOutput
 }
 
 input runCodeWhereInput {
-	code_id: ID
-	test_no: Int
-	test_body: String
+  code_id: ID
+  test_no: Int
+  test_body: String
 }
 
 type AuthResponse {
-	token: String
-	user: User
+  token: String
+  user: User
 }
 
 type runCodeOutput {
-	output: String
-	log: String
-	exitCode: Int
+  output: String
+  log: String
+  exitCode: Int
 }
 
 input updateCodeDataInput {
-	body: String
+  body: String
 }
 
 input updateCodeWhereInput {
-	id: ID
+  id: ID
 }
 
 input createUserInput {
-	username: String!
-	first_name: String!
-	last_name: String!
-	email: String!
-	password: String!
+  username: String!
+  first_name: String!
+  last_name: String!
+  email: String!
+  password: String!
 }
 
 input createExerciseInput {
-	title: String
-	body: String
-	description: String
-	stdin: [String]
-	stdout: [String]
+  title: String
+  body: String
+  description: String
+  stdin: [String]
+  stdout: [String]
 }

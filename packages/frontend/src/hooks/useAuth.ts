@@ -19,8 +19,7 @@ export default (redirect = true) => {
   useDidUpdate(() => {
     if (!data?.me && redirect) history.push('/auth')
 
-    if (loading) dispatch(setLoadingAction({ visible: true }))
-    else dispatch(setLoadingAction({ visible: false }))
+    dispatch(setLoadingAction({ visible: loading }))
   }, [data, loading])
 
   return [data, loading]

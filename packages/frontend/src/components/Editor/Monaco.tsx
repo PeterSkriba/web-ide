@@ -3,8 +3,6 @@ import MonacoEditor from 'react-monaco-editor'
 
 import * as S from './styled'
 
-// https://www.npmjs.com/package/compile-run
-
 type Props = {
   code?: string
   setCode?: (code) => void

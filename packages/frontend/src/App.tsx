@@ -25,13 +25,7 @@ const App = () => {
       {loadingVisible && <Loading />}
       <Layout logout={() => logout()}>
         <Switch>
-          <Route
-            path="/auth"
-            exact
-            render={props => (
-              <Auth onLogin={() => history.push('/')} {...props} />
-            )}
-          />
+          <Route path="/auth" exact render={props => <Auth {...props} />} />
           <Route path="/" exact render={props => <Exercises {...props} />} />
           <Route
             path="/:exercise"
