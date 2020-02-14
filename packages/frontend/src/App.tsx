@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Router, Switch, Route, Redirect } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 
-import { Loading, Layout, Auth, Exercises, Editor } from 'pages'
+import { Loading, Layout, Auth, Exercises, Editor, CreateExercise } from 'pages'
 
 import { loadingSelector } from 'selectors'
 import { useSelector } from 'react-redux'
@@ -27,6 +27,11 @@ const App = () => {
         <Switch>
           <Route path="/auth" exact render={props => <Auth {...props} />} />
           <Route path="/" exact render={props => <Exercises {...props} />} />
+          <Route
+            path="/create"
+            exact
+            render={props => <CreateExercise {...props} />}
+          />
           <Route
             path="/:exercise"
             exact

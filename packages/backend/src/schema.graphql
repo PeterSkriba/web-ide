@@ -2,7 +2,10 @@
 
 type Query {
   codeOwn(user_id: ID!, exercise_slug: String!): Code!
+
   existUser(email: String!): Boolean!
+  existExercise(title: String!): Boolean!
+  isAuthor: isAuthorResponse
 
   exercises: [Exercise]
   me: User
@@ -16,6 +19,16 @@ type Mutation {
 
   updateCode(data: updateCodeDataInput!, where: updateCodeWhereInput!): Code
   runCode(where: runCodeWhereInput!): runCodeOutput
+  runCodeBody(data: runCodeBodyInput!): runCodeOutput
+}
+
+input runCodeBodyInput {
+  body: String
+  input: String
+}
+
+type isAuthorResponse {
+  id: ID
 }
 
 input runCodeWhereInput {

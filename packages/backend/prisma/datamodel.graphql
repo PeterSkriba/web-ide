@@ -5,6 +5,7 @@ type User {
   last_name: String!
   email: String! @unique
   password: String!
+  isAuthor: Boolean! @default(value: false)
   codes: [Code]
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
@@ -26,6 +27,7 @@ type Exercise {
   slug: String! @unique
   body: String
   description: String!
+  isPending: Boolean! @default(value: true)
   stdin: [String]!
   stdout: [String]!
   createdAt: DateTime! @createdAt

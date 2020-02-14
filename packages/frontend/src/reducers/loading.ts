@@ -2,7 +2,7 @@ import { SET_LOADING } from 'constants/loading'
 import { LoadingStateInferface } from 'types'
 
 const initialState: LoadingStateInferface = {
-  visible: false
+  visible: true
 }
 
 export default (state = initialState, action) => {

@@ -11,6 +11,7 @@ export default gql`
         title
         body
         description
+        slug
         stdin
         stdout
       }

@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Wed Feb 05 2020 22:00:11 GMT+0100 (Central European Standard Time)
+# timestamp: Thu Feb 13 2020 13:50:22 GMT+0100 (Central European Standard Time)
 
 type AggregateCode {
   count: Int!
@@ -454,6 +454,7 @@ type Exercise implements Node {
   slug: String!
   body: String
   description: String!
+  isPending: Boolean!
   stdin: [String!]!
   stdout: [String!]!
   createdAt: DateTime!
@@ -476,6 +477,7 @@ input ExerciseCreateInput {
   slug: String!
   body: String
   description: String!
+  isPending: Boolean
   stdin: ExerciseCreatestdinInput
   stdout: ExerciseCreatestdoutInput
 }
@@ -513,6 +515,8 @@ enum ExerciseOrderByInput {
   body_DESC
   description_ASC
   description_DESC
+  isPending_ASC
+  isPending_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -525,6 +529,7 @@ type ExercisePreviousValues {
   slug: String!
   body: String
   description: String!
+  isPending: Boolean!
   stdin: [String!]!
   stdout: [String!]!
   createdAt: DateTime!
@@ -567,6 +572,7 @@ input ExerciseUpdateDataInput {
   slug: String
   body: String
   description: String
+  isPending: Boolean
   stdin: ExerciseUpdatestdinInput
   stdout: ExerciseUpdatestdoutInput
 }
@@ -576,6 +582,7 @@ input ExerciseUpdateInput {
   slug: String
   body: String
   description: String
+  isPending: Boolean
   stdin: ExerciseUpdatestdinInput
   stdout: ExerciseUpdatestdoutInput
 }
@@ -585,6 +592,7 @@ input ExerciseUpdateManyMutationInput {
   slug: String
   body: String
   description: String
+  isPending: Boolean
   stdin: ExerciseUpdatestdinInput
   stdout: ExerciseUpdatestdoutInput
 }
@@ -812,6 +820,10 @@ input ExerciseWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
+  isPending: Boolean
+
+  """All values that are not equal to given value."""
+  isPending_not: Boolean
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -949,6 +961,7 @@ type User implements Node {
   last_name: String!
   email: String!
   password: String!
+  isAuthor: Boolean!
   codes(where: CodeWhereInput, orderBy: CodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Code!]
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -971,6 +984,7 @@ input UserCreateInput {
   last_name: String!
   email: String!
   password: String!
+  isAuthor: Boolean
   codes: CodeCreateManyWithoutUserInput
 }
 
@@ -986,6 +1000,7 @@ input UserCreateWithoutCodesInput {
   last_name: String!
   email: String!
   password: String!
+  isAuthor: Boolean
 }
 
 """An edge in a connection."""
@@ -1010,6 +1025,8 @@ enum UserOrderByInput {
   email_DESC
   password_ASC
   password_DESC
+  isAuthor_ASC
+  isAuthor_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1023,6 +1040,7 @@ type UserPreviousValues {
   last_name: String!
   email: String!
   password: String!
+  isAuthor: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1064,6 +1082,7 @@ input UserUpdateInput {
   last_name: String
   email: String
   password: String
+  isAuthor: Boolean
   codes: CodeUpdateManyWithoutUserInput
 }
 
@@ -1073,6 +1092,7 @@ input UserUpdateManyMutationInput {
   last_name: String
   email: String
   password: String
+  isAuthor: Boolean
 }
 
 input UserUpdateOneRequiredWithoutCodesInput {
@@ -1088,6 +1108,7 @@ input UserUpdateWithoutCodesDataInput {
   last_name: String
   email: String
   password: String
+  isAuthor: Boolean
 }
 
 input UserUpsertWithoutCodesInput {
@@ -1338,6 +1359,10 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   password_not_ends_with: String
+  isAuthor: Boolean
+
+  """All values that are not equal to given value."""
+  isAuthor_not: Boolean
   createdAt: DateTime
 
   """All values that are not equal to given value."""

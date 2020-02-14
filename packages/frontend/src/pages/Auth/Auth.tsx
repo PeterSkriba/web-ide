@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-
+import { useDispatch } from 'react-redux'
+import { setLoadingAction } from 'actions'
 // https://www.prisma.io/docs/prisma-server/authentication-and-security-kke4/
 
 import { LoginForm, RegisterForm } from 'components'
@@ -7,6 +8,9 @@ import { LoginForm, RegisterForm } from 'components'
 import * as S from './styled'
 
 const Auth = () => {
+  const dispatch = useDispatch()
+  dispatch(setLoadingAction({ visible: false }))
+
   const [isLogin, setIsLogin] = useState<boolean>(true)
 
   return (

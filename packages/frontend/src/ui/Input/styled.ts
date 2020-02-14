@@ -4,9 +4,11 @@ import { colors } from 'styles/variables'
 
 export const Wrapper = styled.div`
   position: relative;
+  width: 100%;
 `
 
 export const Input = styled.input`
+  width: 100%;
   padding: 4px 8px;
   margin-bottom: 8px;
   transition: background 0.5s ease;

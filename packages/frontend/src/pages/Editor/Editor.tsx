@@ -82,7 +82,6 @@ const Editor = ({ match }: Props) => {
 
   const [code, setCode] = useState<string>('loading...')
   const [stdin, setStdin] = useState<string>('loading...')
-  const [title, setTitle] = useState<string>('loading...')
   const [output, setOutput] = useState<Output>({
     output: '',
     log: '',
@@ -93,17 +92,15 @@ const Editor = ({ match }: Props) => {
     const codeBody = data?.codeOwn?.body
     const stdinBody = data?.codeOwn?.exercise?.stdin[testActive]
     const exerciseBody = data?.codeOwn?.exercise?.body
-    const exerciseTitle = data?.codeOwn?.exercise?.title
 
     if (codeBody) setCode(codeBody)
     else if (exerciseBody)
       setCode(exerciseBody.replace(/\\n/g, '\n').replace(/\\t/g, '\t'))
     if (stdinBody) setStdin(stdinBody)
-    if (exerciseTitle) setTitle(getTitle(exerciseTitle))
 
     setLogIsOpen(!!output.log)
 
-    dispatch(setLoadingAction({ visible: !data?.codeOwn })) // ?
+    dispatch(setLoadingAction({ visible: !data?.codeOwn })) // TODO: ?
   }, [data, output.log, testActive])
 
   const save = () => {
@@ -180,13 +177,6 @@ const Editor = ({ match }: Props) => {
     }
   }
 
-  const getTitle = (str: string): string =>
-    str
-      .replace(/ /g, '-')
-      .toLowerCase()
-      .replace(/[^a-z0-9]/gi, '')
-      .concat('.c')
-
   const isNotSaved = (): boolean =>
     code != data?.codeOwn?.body && code != data?.codeOwn?.exercise?.body
 
@@ -222,7 +212,9 @@ const Editor = ({ match }: Props) => {
             <S.BoxHeader>
               <CodeRounded fontSize="small" />
 
-              <S.CodeTitle isNotSaved={isNotSaved()}>{title}</S.CodeTitle>
+              <S.CodeTitle isNotSaved={isNotSaved()}>
+                {`${data?.codeOwn?.exercise?.slug}.c`}
+              </S.CodeTitle>
 
               <div>
                 <S.CircleButton onClick={save} color="orange">

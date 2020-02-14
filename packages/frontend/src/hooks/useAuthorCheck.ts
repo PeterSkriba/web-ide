@@ -4,21 +4,20 @@ import { useDidUpdate } from 'react-hooks-lib'
 import { useDispatch } from 'react-redux'
 import { setLoadingAction } from 'actions'
 
-import { ME } from 'apollo/queries'
+import { IS_AUTHOR } from 'apollo/queries'
 
 export default () => {
   const dispatch = useDispatch()
 
   const history = useHistory()
 
-  const { data, loading } = useQuery(ME, {
-    fetchPolicy: 'network-only'
-  })
+  const { data, loading } = useQuery(IS_AUTHOR)
 
   useDidUpdate(() => {
-    if (!loading && !!data?.me) dispatch(setLoadingAction({ visible: false }))
-    //dispatch(setLoadingAction({ visible: loading || !data?.me }))
-    if (!data?.me) history.push('/auth')
+    if (!loading && !!data?.isAuthor)
+      dispatch(setLoadingAction({ visible: false }))
+    //dispatch(setLoadingAction({ visible: loading || !data?.isAuthor }))
+    if (!data?.isAuthor) history.goBack()
   }, [data, loading])
 
   return [data, loading]

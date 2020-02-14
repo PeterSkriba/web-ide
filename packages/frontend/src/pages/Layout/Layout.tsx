@@ -1,8 +1,6 @@
 import React from 'react'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 
-import { useAuth } from 'hooks'
-
 import * as S from './styled'
 
 type Props = {
@@ -11,16 +9,12 @@ type Props = {
 }
 
 const Layout = ({ children, logout }: Props) => {
-  const [meData, meLoading] = useAuth(false)
-
   return (
     <S.Main>
       <S.Header>
-        {!!meData?.me && (
-          <button onClick={logout}>
-            <ExitToAppIcon fontSize="small" />
-          </button>
-        )}
+        <button onClick={logout}>
+          <ExitToAppIcon fontSize="small" />
+        </button>
       </S.Header>
       <S.Content>{children}</S.Content>
       <S.Footer>

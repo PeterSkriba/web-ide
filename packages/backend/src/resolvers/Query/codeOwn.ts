@@ -1,7 +1,6 @@
 export default async (_, args, ctx, info) => {
   const queryCode = await ctx.prisma.query.codes(
     {
-      first: 1,
       where: {
         user: {
           id: args.user_id
@@ -15,6 +14,8 @@ export default async (_, args, ctx, info) => {
   )
 
   if (queryCode[0]) return queryCode[0]
+
+  console.log('create') // TODO: ?
 
   const createCode = await ctx.prisma.mutation.createCode(
     {
