@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { colors } from 'styles/variables'
+import { colors, vars } from 'styles/variables'
 import * as common from 'styles/common'
 
 export const Main = styled.div`
@@ -15,6 +15,7 @@ export const Container = styled.div`
   flex: 1;
   height: 750px;
   padding: 0 8%;
+  transition: padding 0.5s ${vars.transition};
   ${p => p.isOpenSidebar && 'padding-left: 56px;'}
   @media only screen and (max-width: 1000px) {
     flex-direction: column;
@@ -24,8 +25,7 @@ export const Container = styled.div`
 `
 
 export const Wrapper = styled.section`
-  display: flex;
-  flex-direction: column;
+  ${common.flexColumn}
   min-width: 300px;
   @media only screen and (max-width: 1000px) {
     width: 100% !important;
@@ -45,12 +45,12 @@ const log = css`
     max-height: 200px;
     min-height: 60px;
     margin: 0 0 25px 25px;
-    padding-right: 25px;
+    padding-right: ${vars.gap};
     overflow-y: auto;
     white-space: pre-wrap;
   }
   transition-property: max-height, margin-top;
-  transition: ${p => (p.isOpen ? '1s' : '.5s')} cubic-bezier(0, 1, 0, 1);
+  transition: ${p => (p.isOpen ? '1s' : '.5s')} ${vars.transition};
   ${p => !p.isOpen && hide};
 `
 
@@ -66,12 +66,10 @@ const inout = css`
 `
 
 export const Box = styled.div`
-  display: flex;
-  flex-direction: column;
+  ${common.flexColumn}
   flex-grow: 1;
   background: ${colors.box};
-  box-shadow: 6px 6px 15px ${colors.shadow};
-  border-radius: 6px;
+  ${common.box}
   ${p =>
     (p.type == 'log' && log) ||
     (p.type == 'editor' && editor) ||
@@ -83,7 +81,7 @@ export const BoxHeader = styled.div`
   justify-content: space-between;
   width: 100%;
   height: 66px;
-  padding: 25px;
+  padding: ${vars.gap};
   align-items: center;
 `
 
@@ -160,14 +158,12 @@ export const TestButton = styled.button`
 `
 
 export const Sidebar = styled.aside`
-  display: flex;
-  flex-direction: column;
-  height: 750px;
-  background: ${colors.box};
-  box-shadow: 6px 6px 15px ${colors.shadow};
-  border-radius: 0 6px 6px 0;
+  ${common.flexColumn}
+  ${common.box}
   position: relative;
-  transition: width 0.5s cubic-bezier(0, 1, 0, 1);
+  height: 750px;
+  border-radius: 0 4px 4px 0;
+  transition: width 0.5s ${vars.transition};
   width: ${p => (p.isOpen ? '350px' : '0px')};
   @media only screen and (max-width: 1300px) {
     width: ${p => (p.isOpen ? '250px' : '0px')};
@@ -179,10 +175,17 @@ export const Sidebar = styled.aside`
     height: auto;
     max-height: 400px;
   }
-  div {
-    overflow: hidden;
+  header {
     display: flex;
     align-items: center;
+    width: 350px;
+    padding: ${vars.gap};
+    @media only screen and (max-width: 1300px) {
+      width: 250px;
+    }
+    @media only screen and (max-width: 1000px) {
+      width: 100%;
+    }
     h2 {
       margin-left: 8px;
       font-weight: 500;
@@ -191,9 +194,19 @@ export const Sidebar = styled.aside`
   }
 `
 
-export const SidebarBody = styled.div`
+export const SidebarWrapper = styled.div`
   overflow: hidden;
+`
+
+export const SidebarBody = styled.div`
   margin-bottom: 25px;
+  width: 350px;
+  @media only screen and (max-width: 1300px) {
+    width: 250px;
+  }
+  @media only screen and (max-width: 1000px) {
+    width: 100%;
+  }
   pre {
     width: 100%;
     height: 100%;

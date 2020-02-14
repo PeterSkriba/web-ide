@@ -14,16 +14,10 @@ const App = () => {
 
   useEffect(() => {}, [loadingVisible])
 
-  const logout = () => {
-    //client.resetStore()
-    localStorage.removeItem('editor_auth-token')
-    history.push('/auth')
-  }
-
   return (
     <Router history={history}>
       {loadingVisible && <Loading />}
-      <Layout logout={() => logout()}>
+      <Layout>
         <Switch>
           <Route path="/auth" exact render={props => <Auth {...props} />} />
           <Route path="/" exact render={props => <Exercises {...props} />} />

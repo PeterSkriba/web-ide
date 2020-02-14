@@ -183,23 +183,23 @@ const Editor = ({ match }: Props) => {
   return (
     <S.Main onMouseUp={handleStopDragging} onMouseMove={handleDragging}>
       <S.Sidebar isOpen={sidebarIsOpen}>
-        <S.ToggleSidebar
-          onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
-          isOpen={sidebarIsOpen}
-        >
-          <ArrowForwardIosRoundedIcon fontSize="small" />
-        </S.ToggleSidebar>
+        <S.SidebarWrapper>
+          <S.ToggleSidebar
+            onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
+            isOpen={sidebarIsOpen}
+          >
+            <ArrowForwardIosRoundedIcon fontSize="small" />
+          </S.ToggleSidebar>
 
-        <S.BoxHeader>
-          <div>
+          <header>
             <AssignmentTurnedInIcon fontSize="small" />
             <h2>{data?.codeOwn?.exercise?.title}</h2>
-          </div>
-        </S.BoxHeader>
+          </header>
 
-        <S.SidebarBody>
-          <pre>{data?.codeOwn?.exercise?.description}</pre>
-        </S.SidebarBody>
+          <S.SidebarBody>
+            <pre>{data?.codeOwn?.exercise?.description}</pre>
+          </S.SidebarBody>
+        </S.SidebarWrapper>
       </S.Sidebar>
 
       <S.Container

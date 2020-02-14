@@ -6,7 +6,7 @@ import { setLoadingAction } from 'actions'
 
 import { IS_AUTHOR } from 'apollo/queries'
 
-export default () => {
+export default (redirect = true) => {
   const dispatch = useDispatch()
 
   const history = useHistory()
@@ -16,8 +16,7 @@ export default () => {
   useDidUpdate(() => {
     if (!loading && !!data?.isAuthor)
       dispatch(setLoadingAction({ visible: false }))
-    //dispatch(setLoadingAction({ visible: loading || !data?.isAuthor }))
-    if (!data?.isAuthor) history.goBack()
+    if (!data?.isAuthor && redirect) history.goBack()
   }, [data, loading])
 
   return [data, loading]

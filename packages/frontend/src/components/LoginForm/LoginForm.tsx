@@ -2,10 +2,12 @@ import React from 'react'
 import { useMutation } from '@apollo/react-hooks'
 import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
+import PersonIcon from '@material-ui/icons/Person'
+import LockIcon from '@material-ui/icons/Lock'
 
 import { LOGIN } from 'apollo/mutations'
 
-import { Input } from 'ui'
+import { Input, Button } from 'ui'
 
 import * as S from './styled'
 
@@ -53,8 +55,9 @@ const LoginForm = () => {
         errors={errors}
         type="email"
         name="email"
-        title="Email"
-        placeholder="Enter email"
+        title="email"
+        icon={<PersonIcon />}
+        placeholder="Email"
         options={{
           required: true,
           pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
@@ -66,14 +69,15 @@ const LoginForm = () => {
         errors={errors}
         type="password"
         name="password"
-        title="Password"
-        placeholder="Enter password"
+        title="password"
+        icon={<LockIcon />}
+        placeholder="Password"
         options={{
           required: true
         }}
       />
 
-      <S.Submit type="submit">Submit</S.Submit>
+      <Button type="submit" value="Sign in" />
     </S.Wrapper>
   )
 }

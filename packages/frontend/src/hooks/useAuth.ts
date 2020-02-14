@@ -17,7 +17,6 @@ export default () => {
 
   useDidUpdate(() => {
     if (!loading && !!data?.me) dispatch(setLoadingAction({ visible: false }))
-    //dispatch(setLoadingAction({ visible: loading || !data?.me }))
     if (!data?.me) history.push('/auth')
   }, [data, loading])
 

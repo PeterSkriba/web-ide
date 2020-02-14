@@ -4,13 +4,15 @@ import { ErrorMessage } from 'react-hook-form'
 import * as S from './styled'
 
 const getError = (name: string, value?: string) => ({
-  required: `${name} is required.`,
-  minLength: `${name} must be at least ${value} characters long.`,
-  maxLength: `${name} must be at the most ${value} characters long.`,
-  pattern: `Invalid ${name} format.`
+  required: `${name} is required`,
+  minLength: `${name} must be at least ${value} characters long`,
+  maxLength: `${name} must be at the most ${value} characters long`,
+  pattern: `invalid ${name} format`
 })
 
 // warning
+// good format color
+// not empty
 
 type Options = {
   required?: boolean
@@ -26,6 +28,7 @@ type Props = {
   type: string
   name: string
   title: string
+  icon: any
   placeholder?: string
   options?: Options
 }
@@ -36,6 +39,7 @@ const Input = ({
   type,
   name,
   title,
+  icon,
   placeholder,
   options
 }: Props) => (
@@ -44,7 +48,6 @@ const Input = ({
       type={type}
       name={name}
       isError={!!errors[name]}
-      placeholder={placeholder}
       ref={register({
         required: options?.required && getError(title).required,
         minLength: {
@@ -66,7 +69,11 @@ const Input = ({
         validate: options?.validate
       })}
     />
-    <S.ErrorBox isVisible={!!errors[name]}>
+    <S.Label isError={!!errors[name]} htmlFor={name}>
+      {placeholder}
+    </S.Label>
+    <S.Icon isError={!!errors[name]}>{icon}</S.Icon>
+    <S.ErrorBox isError={!!errors[name]}>
       <ErrorMessage errors={errors} name={name} />
     </S.ErrorBox>
   </S.Wrapper>

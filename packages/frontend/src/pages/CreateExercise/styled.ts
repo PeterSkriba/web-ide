@@ -6,6 +6,5 @@ export const Wrapper = styled.div`
   ${common.flexCenterVH}
   flex-direction: column;
   width: 40%;
-  background: ${colors.box};
   padding: 25px;
 `
