@@ -10,10 +10,10 @@ module.exports = {
         __dirname,
         'node_modules',
         'styled-components'
-      )
+      ),
     },
     modules: [path.resolve(__dirname, 'src'), 'node_modules'],
-    extensions: ['.tsx', '.ts', '.jsx', '.js']
+    extensions: ['.tsx', '.ts', '.jsx', '.js'],
   },
   entry: ['./src/index.tsx'],
   module: {
@@ -21,42 +21,36 @@ module.exports = {
       {
         test: /\.ts[x]?$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        use: ['babel-loader'],
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.ttf$/,
-        use: ['file-loader']
-      }
-    ]
+        use: ['file-loader'],
+      },
+    ],
   },
   output: {
     filename: '[name].js',
     chunkFilename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
+    publicPath: '/',
   },
   devServer: {
     contentBase: path.join(__dirname, 'public'),
     hot: true,
     inline: true,
-    historyApiFallback: true
+    historyApiFallback: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'public', 'index.html'),
-      filename: 'index.html'
+      filename: 'index.html',
     }),
-    new CopyWebpackPlugin([
-      {
-        from: 'public',
-        to: '.',
-        ignore: ['README.md']
-      }
-    ]),
-    new MonacoWebpackPlugin()
-  ]
+    new CopyWebpackPlugin([{ from: 'public', to: '.' }]),
+    new MonacoWebpackPlugin(),
+  ],
 }

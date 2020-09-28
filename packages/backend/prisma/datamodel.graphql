@@ -33,3 +33,4 @@ type Exercise {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
+
